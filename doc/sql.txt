@@ -1,0 +1,80 @@
+#
+# Base tables for runtime and audit.
+#
+CREATE TABLE IF NOT EXISTS settings(
+  id INTEGER PRIMARY KEY,
+  key varchar(32) NOT NULL,
+  value varchar(255),
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+# Track application logs
+CREATE TABLE IF NOT EXISTS logs(
+  id INTEGER PRIMARY KEY,
+  created_at TIMESTAMP,
+  message TEXT
+);
+
+# Available courses
+CREATE TABLE IF NOT EXISTS courses(
+  id INTEGER PRIMARY KEY,
+  course_name varchar(128),
+  course_department varchar(64),
+  course_grade_level INTEGER NOT NULL,
+  course_credit float 0.0,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS students(
+  id INTEGER PRIMARY KEY,
+  last_name INTEGER NOT NULL,
+  first_name INTEGER NOT NULL,
+  grade_level INTEGER NOT NULL,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS student_courses(
+  id INTEGER PRIMARY KEY,
+  student_id INTEGER NOT NULL,
+  course_id INTEGER NOT NULL,
+  credits_earned FLOAT 0.0,
+  FOREIGN KEY(student_id) REFERENCES students(id),
+  FOREIGN KEY(course_id) REFERENCES courses(id)
+);
+
+INSERT INTO settings (key,value) VALUES('last_import','0000-00-00 00:00:00');
+INSERT INTO settings (key,value) VALUES('database','coursemap.db');
+INSERT INTO settings (key,value) VALUES('color_ninth','red');
+INSERT INTO settings (key,value) VALUES('color_tenth','green');
+INSERT INTO settings (key,value) VALUES('color_eleventh','blue');
+INSERT INTO settings (key,value) VALUES('color_twelfth','yellow');
+INSERT INTO settings (key,value) VALUES('minimum_core_total', 22.5);
+INSERT INTO settings (key,value) VALUES('minimum_elective_total', 6.5);
+INSERT INTO settings (key,value) VALUES('minimum_total', 29);
+INSERT INTO settings (key,value) VALUES('minimum_dept_bible', 4);
+INSERT INTO settings (key,value) VALUES('minimum_dept_mathematics', 4);
+INSERT INTO settings (key,value) VALUES('minimum_dept_language_arts', 4);
+INSERT INTO settings (key,value) VALUES('minimum_dept_social_studies', 4);
+INSERT INTO settings (key,value) VALUES('minimum_dept_science', 3);
+INSERT INTO settings (key,value) VALUES('minimum_dept_foreign_language', 2);
+INSERT INTO settings (key,value) VALUES('minimum_dept_physical_education', 1);
+INSERT INTO settings (key,value) VALUES('minimum_dept_oral_communications', 0.5);
+INSERT INTO settings (key,value) VALUES('minimum_dept_fine_arts', 0.5);
+INSERT INTO settings (key,value) VALUES('minimum_dept_practical_arts', 1);
+INSERT INTO settings (key,value) VALUES('minimum_dept_technology', 0.5);
+INSERT INTO settings (key,value) VALUES('minimum_dept_other', 0.0);
+
+#
+# Future tables for Planning
+#
+
+
+# Planning table
+CREATE TABLE IF NOT EXISTS student_planning(
+  id INTEGER PRIMARY KEY,
+  student_id INTEGER NOT NULL,
+  course_id INTEGER NOT NULL,
+  planned_grade_level INTEGER NOT NULL,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(student_id) REFERENCES students(id),
+  FOREIGN KEY(course_id) REFERENCES courses(id)
+);
