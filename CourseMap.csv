@@ -1,0 +1,81 @@
+Student ID (System),"LastName, FirstName",Status,Grade Level,Grade Level 1,Course,Year,Credits,Department
+1201674,"Shoe, Ethan",Enrolled,12,7,Character Quest,2013-2014,0,Bible
+1201674,"Shoe, Ethan",Enrolled,12,7,Junior High Art,2013-2014,0,Fine Arts
+1201674,"Shoe, Ethan",Enrolled,12,7,Junior High Journalism,2013-2014,0,Other
+1201674,"Shoe, Ethan",Enrolled,12,7,Language Arts 7,2013-2014,0,Language Arts
+1201674,"Shoe, Ethan",Enrolled,12,7,Life Science,2013-2014,0,Science
+1201674,"Shoe, Ethan",Enrolled,12,7,Math 7,2013-2014,0,Mathematics
+1201674,"Shoe, Ethan",Enrolled,12,7,PE 7,2013-2014,0,Physical Education
+1201674,"Shoe, Ethan",Enrolled,12,7,World Studies,2013-2014,0,Social Studies
+1201674,"Shoe, Ethan",Enrolled,12,8,American Republic,2014-2015,0,Social Studies
+1201674,"Shoe, Ethan",Enrolled,12,8,Earth Science,2014-2015,0,Science
+1201674,"Shoe, Ethan",Enrolled,12,8,Junior High Art,2014-2015,0,Fine Arts
+1201674,"Shoe, Ethan",Enrolled,12,8,Junior High Journalism,2014-2015,0,Other
+1201674,"Shoe, Ethan",Enrolled,12,8,Language Arts 8,2014-2015,0,Language Arts
+1201674,"Shoe, Ethan",Enrolled,12,8,PE 8,2014-2015,0.5,Physical Education
+1201674,"Shoe, Ethan",Enrolled,12,8,Pre-Algebra,2014-2015,0,Mathematics
+1201674,"Shoe, Ethan",Enrolled,12,8,Survival Quest,2014-2015,0,Bible
+1201674,"Shoe, Ethan",Enrolled,12,9,Algebra 1,2015-2016,1,Mathematics
+1201674,"Shoe, Ethan",Enrolled,12,9,Civics,2015-2016,0.5,Social Studies
+1201674,"Shoe, Ethan",Enrolled,12,9,Cultural Geography,2015-2016,0.5,Social Studies
+1201674,"Shoe, Ethan",Enrolled,12,9,Family & Consumer Science,2015-2016,0.5,Practical Arts
+1201674,"Shoe, Ethan",Enrolled,12,9,Health,2015-2016,0.5,Physical Education
+1201674,"Shoe, Ethan",Enrolled,12,9,High School Art,2015-2016,0.5,Fine Arts
+1201674,"Shoe, Ethan",Enrolled,12,9,Language Arts 9,2015-2016,1,English
+1201674,"Shoe, Ethan",Enrolled,12,9,Microsoft Office,2015-2016,0.5,Technology
+1201674,"Shoe, Ethan",Enrolled,12,9,Old and New Testament Survey,2015-2016,1,Bible
+1201674,"Shoe, Ethan",Enrolled,12,9,Oral Communications,2015-2016,0.5,Oral Communications
+1201674,"Shoe, Ethan",Enrolled,12,9,Photography,2015-2016,0.5,Technology
+1201674,"Shoe, Ethan",Enrolled,12,9,Physical Science,2015-2016,1,Science
+1201674,"Shoe, Ethan",Enrolled,12,10,Biblical Interpretation,2016-2017,1,Bible
+1201674,"Shoe, Ethan",Enrolled,12,10,Computer Science Principles,2016-2017,1,Technology
+1201674,"Shoe, Ethan",Enrolled,12,10,Geometry,2016-2017,1,Mathematics
+1201674,"Shoe, Ethan",Enrolled,12,10,Honors Biology,2016-2017,1,Science
+1201674,"Shoe, Ethan",Enrolled,12,10,Individual Sports,2016-2017,0.5,Physical Education
+1201674,"Shoe, Ethan",Enrolled,12,10,Language Arts 10,2016-2017,1,English
+1201674,"Shoe, Ethan",Enrolled,12,10,MS Office 2,2016-2017,0.5,Technology
+1201674,"Shoe, Ethan",Enrolled,12,10,Spanish 1,2016-2017,1,Foreign Language
+1201674,"Shoe, Ethan",Enrolled,12,10,Video and Editing,2016-2017,0.5,Technology
+1201674,"Shoe, Ethan",Enrolled,12,10,World History,2016-2017,1,Social Studies
+1201674,"Shoe, Ethan",Enrolled,12,11,ACT Prep,2017-2018,0.5,Other
+1201674,"Shoe, Ethan",Enrolled,12,11,Advanced Web Design,2017-2018,0.5,Technology
+1201674,"Shoe, Ethan",Enrolled,12,11,Algebra 2,2017-2018,1,Mathematics
+1201674,"Shoe, Ethan",Enrolled,12,11,American History,2017-2018,1,Social Studies
+1201674,"Shoe, Ethan",Enrolled,12,11,American Literature,2017-2018,1,English
+1201674,"Shoe, Ethan",Enrolled,12,11,Chemistry,2017-2018,1,Science
+1201674,"Shoe, Ethan",Enrolled,12,11,Outdoor Education,2017-2018,0.5,
+1201674,"Shoe, Ethan",Enrolled,12,11,Spanish 2,2017-2018,1,Foreign Language
+1201674,"Shoe, Ethan",Enrolled,12,11,Systematic Theology,2017-2018,1,Bible
+1202490,"Green, Maxwell",Enrolled,12,8,Pre AP Algebra 1,2014-2015,1,Mathematics
+1202490,"Green, Maxwell",Enrolled,12,9,Civics,2015-2016,0.5,Social Studies
+1202490,"Green, Maxwell",Enrolled,12,9,Cultural Geography,2015-2016,0.5,Social Studies
+1202490,"Green, Maxwell",Enrolled,12,9,Geometry,2015-2016,1,Mathematics
+1202490,"Green, Maxwell",Enrolled,12,9,Health,2014-2015,0.5,Physical Education
+1202490,"Green, Maxwell",Enrolled,12,9,Honors English,2015-2016,1,English
+1202490,"Green, Maxwell",Enrolled,12,9,Microsoft Office,2015-2016,0.5,Technology
+1202490,"Green, Maxwell",Enrolled,12,9,Old and New Testament Survey,2015-2016,1,Bible
+1202490,"Green, Maxwell",Enrolled,12,9,Oral Communications,2015-2016,0.5,Oral Communications
+1202490,"Green, Maxwell",Enrolled,12,9,Physical Science,2015-2016,1,Science
+1202490,"Green, Maxwell",Enrolled,12,9,Programming,2015-2016,0.5,Technology
+1202490,"Green, Maxwell",Enrolled,12,9,Success 1.0,2015-2016,0.5,Practical Arts
+1202490,"Green, Maxwell",Enrolled,12,9,Yearbook,2015-2016,1,Technology
+1202490,"Green, Maxwell",Enrolled,12,10,Biblical Interpretation,2016-2017,1,Bible
+1202490,"Green, Maxwell",Enrolled,12,10,Computer Science Principles,2016-2017,1,Technology
+1202490,"Green, Maxwell",Enrolled,12,10,Family & Consumer Science,2016-2017,0.5,Practical Arts
+1202490,"Green, Maxwell",Enrolled,12,10,High School Art,2016-2017,0.5,Fine Arts
+1202490,"Green, Maxwell",Enrolled,12,10,Honors Algebra 2,2016-2017,1,Mathematics
+1202490,"Green, Maxwell",Enrolled,12,10,Honors Biology,2016-2017,1,Science
+1202490,"Green, Maxwell",Enrolled,12,10,Honors English,2016-2017,1,English
+1202490,"Green, Maxwell",Enrolled,12,10,Spanish 1,2016-2017,1,Foreign Language
+1202490,"Green, Maxwell",Enrolled,12,10,Video and Editing,2016-2017,0.5,Technology
+1202490,"Green, Maxwell",Enrolled,12,10,World History,2016-2017,1,Social Studies
+1202490,"Green, Maxwell",Enrolled,12,11,ACT Prep,2017-2018,0.5,Other
+1202490,"Green, Maxwell",Enrolled,12,11,Chemistry,2017-2018,1,Science
+1202490,"Green, Maxwell",Enrolled,12,11,Concurrent US History,2017-2018,0.5,Social Studies
+1202490,"Green, Maxwell",Enrolled,12,11,Concurrent US History 2,2017-2018,0.5,Social Studies
+1202490,"Green, Maxwell",Enrolled,12,11,Honors American Literature,2017-2018,1,English
+1202490,"Green, Maxwell",Enrolled,12,11,Honors Pre-Calculus,2017-2018,1,Mathematics
+1202490,"Green, Maxwell",Enrolled,12,11,Individual Sports,2017-2018,0.5,Physical Education
+1202490,"Green, Maxwell",Enrolled,12,11,Spanish 2,2017-2018,1,Foreign Language
+1202490,"Green, Maxwell",Enrolled,12,11,Systematic Theology,2017-2018,1,Bible
+1202490,"Green, Maxwell",Enrolled,12,11,Web Design,2017-2018,0.5,Technology
