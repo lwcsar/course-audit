@@ -41,13 +41,16 @@ import lib.input as datainput
 import argparse
 
 parser = argparse.ArgumentParser()
+parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
 parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-# TODO: Add more Arguments
+# TODO: Add more Arguments as defined in our comments above.
 
 args = parser.parse_args()
-args = parser.parse_args(['--init'])
+# args = parser.parse_args(['--init'])
 
-if args.init:
+if args.debug:
+    pass # Output debugging information
+elif args.init:
     datainput.createSqliteTables()
-elif args.input:
-    datainput.importCSV()
+else:
+    parser.print_help()
