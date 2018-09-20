@@ -1,6 +1,6 @@
-#
-# Base tables for runtime and audit.
-#
+--
+-- Base tables for runtime and audit.
+--
 CREATE TABLE IF NOT EXISTS settings(
   id INTEGER PRIMARY KEY,
   key varchar(32) NOT NULL,
@@ -8,20 +8,20 @@ CREATE TABLE IF NOT EXISTS settings(
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-# Track application logs
+-- Track application logs
 CREATE TABLE IF NOT EXISTS logs(
   id INTEGER PRIMARY KEY,
   created_at TIMESTAMP,
   message TEXT
 );
 
-# Available courses
+-- Available courses
 CREATE TABLE IF NOT EXISTS courses(
   id INTEGER PRIMARY KEY,
   course_name varchar(128),
   course_department varchar(64),
   course_grade_level INTEGER NOT NULL,
-  course_credit float 0.0,
+  course_credit FLOAT DEFAULT 0.0,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS student_courses(
   id INTEGER PRIMARY KEY,
   student_id INTEGER NOT NULL,
   course_id INTEGER NOT NULL,
-  credits_earned FLOAT 0.0,
+  credits_earned FLOAT DEFAULT 0.0,
   FOREIGN KEY(student_id) REFERENCES students(id),
   FOREIGN KEY(course_id) REFERENCES courses(id)
 );
@@ -61,14 +61,14 @@ INSERT INTO settings (key,value) VALUES('minimum_dept_oral_communications', 0.5)
 INSERT INTO settings (key,value) VALUES('minimum_dept_fine_arts', 0.5);
 INSERT INTO settings (key,value) VALUES('minimum_dept_practical_arts', 1);
 INSERT INTO settings (key,value) VALUES('minimum_dept_technology', 0.5);
-INSERT INTO settings (key,value) VALUES('minimum_dept_other', 0.0);
+INSERT INTO settings (key,value) VALUES('minimum_dept_other', 0);
 
-#
-# Future tables for Planning
-#
+--
+-- Future tables for Planning
+--
 
 
-# Planning table
+-- Planning table
 CREATE TABLE IF NOT EXISTS student_planning(
   id INTEGER PRIMARY KEY,
   student_id INTEGER NOT NULL,

@@ -21,7 +21,14 @@ def sqlite_connect():
     #   import sql.txt into new database
     # Connect to DB and return
     conn = sqlite3.connect('coursemap.db')
+    return conn
 
+def createSqliteTables():
+    sqlfile = open("doc/sql.txt", "r")
+    sqltxt = sqlfile.read()
+    conn = sqlite_connect()
+    c = conn.cursor()
+    c.executescript(sqltxt)
 
 def processCSV(reader):
     firstID = 0
@@ -46,6 +53,7 @@ def processCSV(reader):
         # debug
 
 
-with open("CourseMap.csv", newline='') as csvfile:
-  csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-  processCSV(csvreader)
+def chooseCSV():
+    with open("CourseMap.csv", newline='') as csvfile:
+      csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+      processCSV(csvreader)
