@@ -30,6 +30,7 @@ Application arguments shall include the following:
 -h, --help      to show a brief help message
 -v, --version   display version information and exit.
 -d, --debug     print out debugging information
+
 and...
 
 '''
@@ -38,10 +39,11 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
+
 # Add more Arguments
 
-# args = parser.parse_args()
-args = parser.parse_args(['--init'])
+args = parser.parse_args()
+# args = parser.parse_args(['--init'])
 
 if args.init:
     datainput.createSqliteTables()
