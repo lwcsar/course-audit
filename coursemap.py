@@ -39,7 +39,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
 
-# Add more Arguments
+## TODO:  Add more Arguments
 
 args = parser.parse_args()
 # args = parser.parse_args(['--init'])
