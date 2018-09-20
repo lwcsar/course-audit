@@ -27,9 +27,13 @@ We whould utilize the argparse module to implement this functionality for us.
 https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
--h, --help      to show a brief help message
--v, --version   display version information and exit.
--d, --debug     print out debugging information
+-h, --help          to show a brief help message
+-v, --version       display version information and exit.
+-d, --debug         print out debugging information
+--init              Initialize our SQLite database
+--input=<file>      CSV file to import into the application
+--outputdir=<dir>   Directory to output our PDF files
+--grade=<grade>     The grade to process or 'all'
 and...
 
 '''
@@ -38,11 +42,12 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-
-# Add more Arguments
+# TODO: Add more Arguments
 
 args = parser.parse_args()
-# args = parser.parse_args(['--init'])
+args = parser.parse_args(['--init'])
 
 if args.init:
     datainput.createSqliteTables()
+elif args.input:
+    datainput.importCSV()
