@@ -30,7 +30,6 @@ Application arguments shall include the following:
 -h, --help      to show a brief help message
 -v, --version   display version information and exit.
 -d, --debug     print out debugging information
-
 and...
 
 '''
