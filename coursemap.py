@@ -27,13 +27,13 @@ We whould utilize the argparse module to implement this functionality for us.
 https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
--h, --help          to show a brief help message
--v, --version       display version information and exit.
--d, --debug         print out debugging information
+# TODO: -h, --help          to show a brief help message
+# TODO: -v, --version       display version information and exit.
+# TODO: -d, --debug         print out debugging information
 --init              Initialize our SQLite database
---input=<file>      CSV file to import into the application
---outputdir=<dir>   Directory to output our PDF files
---grade=<grade>     The grade to process or 'all'
+# TODO: --input=<file>      CSV file to import into the application
+# TODO: --outputdir=<dir>   Directory to output our PDF files
+# TODO: --grade=<grade>     The grade to process or 'all'
 and...
 
 '''
