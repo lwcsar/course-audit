@@ -27,30 +27,48 @@ We whould utilize the argparse module to implement this functionality for us.
 https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
-# TODO: -h, --help          to show a brief help message
-# TODO: -v, --version       display version information and exit.
-# TODO: -d, --debug         print out debugging information
+-h, --help          to show a brief help message
+# QUESTION: ArgumentParser automatically generates a help file. Throws error if you try and do this yourself
+-v, --version       display version information and exit.
+-d, --debug         print out debugging information
 --init              Initialize our SQLite database
-# TODO: --input=<file>      CSV file to import into the application
-# TODO: --outputdir=<dir>   Directory to output our PDF files
-# TODO: --grade=<grade>     The grade to process or 'all'
+--input=<file>      CSV file to import into the application
+--outputdir=<dir>   Directory to output our PDF files
+--grade=<grade>     The grade to process or 'all'
 and...
 
 '''
 import lib.input as datainput
 import argparse
 
+# TODO: Move this method and import to appropriate class
+# import subprocess
+def getVersion():
+    # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
+    # return subprocess.check_output(["C:\\Users\\Max Green\\AppData\\Local\\GitHubDesktop\\app-1.4.0\\resources\\app\\git\\cmd", "git", "describe"]).strip()
+    return "0.1.0"
+
 parser = argparse.ArgumentParser()
+parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
 parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
 parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-# TODO: Add more Arguments as defined in our comments above.
+parser.add_argument('--input', help='Import CSV file to application', type=str)
+parser.add_argument('--outputdir' help='Directory to output PDF files', type=str)
+parser.add_argument('--grade' help='The grade to process or all', type=str)
 
 args = parser.parse_args()
-# args = parser.parse_args(['--init'])
-
-if args.debug:
-    pass # Output debugging information
+if args.version:
+    print(getVersion())
+    exit()
+elif args.debug:
+    pass # TODO: Output debugging information
 elif args.init:
     datainput.createSqliteTables()
+elif args.input:
+    pass # TODO: Input CSV file to application
+elif args.outputdir:
+    pass # TODO: Set output Directory
+elif args.grade:
+    pass # TODO: Set grade to process
 else:
     parser.print_help()
