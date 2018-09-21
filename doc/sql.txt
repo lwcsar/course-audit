@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS courses(
   course_credit FLOAT DEFAULT 0.0,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE UNIQUE INDEX idx_course_grade on courses(course_name,course_grade_level);
 
 CREATE TABLE IF NOT EXISTS students(
   id INTEGER PRIMARY KEY,
@@ -40,8 +41,10 @@ CREATE TABLE IF NOT EXISTS student_courses(
   FOREIGN KEY(student_id) REFERENCES students(id),
   FOREIGN KEY(course_id) REFERENCES courses(id)
 );
+CREATE UNIQUE INDEX idx_student_courses on student_courses(student_id,course_id);
 
-INSERT INTO settings (key,value) VALUES('last_import','0000-00-00 00:00:00');
+
+INSERT INTO settings (key,value) VALUES('last_import',datetime());
 INSERT INTO settings (key,value) VALUES('database','coursemap.db');
 INSERT INTO settings (key,value) VALUES('color_ninth','red');
 INSERT INTO settings (key,value) VALUES('color_tenth','green');

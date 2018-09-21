@@ -1,5 +1,5 @@
 
-'''
+"""
 This is the entrypoint into our application. This file will become largely
 static once we establish some of the basics. We will bootstrap
 the app and import the rest of the modules from here. Most work will be in
@@ -27,7 +27,7 @@ We whould utilize the argparse module to implement this functionality for us.
 https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
-# TODO: -h, --help          to show a brief help message
+-h, --help          to show a brief help message
 # TODO: -v, --version       display version information and exit.
 # TODO: -d, --debug         print out debugging information
 --init              Initialize our SQLite database
@@ -36,21 +36,32 @@ Application arguments shall include the following:
 # TODO: --grade=<grade>     The grade to process or 'all'
 and...
 
-'''
-import lib.input as datainput
+"""
+import os
 import argparse
+import lib.input as datainput
+import lib.database as database
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
-parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-# TODO: Add more Arguments as defined in our comments above.
 
-args = parser.parse_args()
-# args = parser.parse_args(['--init'])
 
-if args.debug:
-    pass # Output debugging information
-elif args.init:
-    datainput.createSqliteTables()
-else:
-    parser.print_help()
+def check_args(args=None):
+    parser = argparse.ArgumentParser(description='Course Map report generating tool.')
+    parser.add_argument('-d','--debug', action='store_true', help='Print out debugging information.')
+    parser.add_argument('--init', action='store_true', help='Initialize our SQLite database.')
+    parser.add_argument('--input', nargs=1, type=str, default='CourseMap.csv', help='Initialize our SQLite database.')
+    # TODO: Add more Arguments as defined in our comments above.
+
+    args = parser.parse_args()
+    return args
+
+
+if __name__ == '__main__':
+    args = check_args()
+    if args.debug:
+        debug += 1
+    if args.init:
+        database.create_sqlite_tables()
+    if args.input:
+        dir = os.path.dirname(os.path.abspath(__file__))
+        file = os.path.join(dir, str(args.input[0]))
+        datainput.import_csv(file)
