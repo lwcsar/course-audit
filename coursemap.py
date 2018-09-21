@@ -28,12 +28,13 @@ https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
 -h, --help          to show a brief help message
-# TODO: -v, --version       display version information and exit.
-# TODO: -d, --debug         print out debugging information
+# QUESTION: ArgumentParser automatically generates a help file. Throws error if you try and do this yourself
+-v, --version       display version information and exit.
+-d, --debug         print out debugging information
 --init              Initialize our SQLite database
-# TODO: --input=<file>      CSV file to import into the application
-# TODO: --outputdir=<dir>   Directory to output our PDF files
-# TODO: --grade=<grade>     The grade to process or 'all'
+--input=<file>      CSV file to import into the application
+--outputdir=<dir>   Directory to output our PDF files
+--grade=<grade>     The grade to process or 'all'
 and...
 
 """
@@ -42,21 +43,27 @@ import argparse
 import lib.input as datainput
 import lib.database as database
 
-
+# TODO: Move this method and import to appropriate class
+def get_version():
+    # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
+    return "0.1.0"
 
 def check_args(args=None):
     parser = argparse.ArgumentParser(description='Course Map report generating tool.')
-    parser.add_argument('-d','--debug', action='store_true', help='Print out debugging information.')
-    parser.add_argument('--init', action='store_true', help='Initialize our SQLite database.')
+    parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
+    parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
+    parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
     parser.add_argument('--input', nargs=1, type=str, default='CourseMap.csv', help='Initialize our SQLite database.')
-    # TODO: Add more Arguments as defined in our comments above.
-
-    args = parser.parse_args()
-    return args
+    parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
+    parser.add_argument('--grade', help='The grade to process or all', type=str)
+    return parser.parse_args()
 
 
 if __name__ == '__main__':
     args = check_args()
+    if args.version:
+        print(get_version())
+    exit()
     if args.debug:
         debug += 1
     if args.init:
@@ -65,3 +72,9 @@ if __name__ == '__main__':
         dir = os.path.dirname(os.path.abspath(__file__))
         file = os.path.join(dir, str(args.input[0]))
         datainput.import_csv(file)
+    if args.outputdir:
+        pass # TODO: Set output Directory
+    if args.grade:
+        pass # TODO: Set grade to process
+    else:
+        parser.print_help()
