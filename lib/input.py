@@ -1,5 +1,6 @@
 import csv
 import sqlite3
+import os
 
 ''' IMPORT
 
@@ -54,6 +55,6 @@ def processCSV(reader):
 
 
 def chooseCSV():
-    with open("CourseMap.csv", newline='') as csvfile: # FIXME: Coursemap will not work without the full path. Fix?
+    with open(os.path.dirname(os.path.realpath(__file__)) + '\..\CourseMap.csv', newline='') as csvfile:
       csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
       processCSV(csvreader)
