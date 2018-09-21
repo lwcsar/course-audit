@@ -63,7 +63,7 @@ if __name__ == '__main__':
     args = check_args()
     if args.version:
         print(get_version())
-    exit()
+        exit()
     if args.debug:
         debug += 1
     if args.init:
