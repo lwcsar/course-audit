@@ -1,5 +1,6 @@
 import csv
 import sqlite3
+import os
 
 ''' IMPORT
 
@@ -24,7 +25,7 @@ def sqlite_connect():
     return conn
 
 def createSqliteTables():
-    sqlfile = open("doc/sql.txt", "r")
+    sqlfile = open(os.path.dirname(os.path.realpath(__file__)) + '\..\doc/sql.txt', "r") # NOTE: Use os.path.dirname(os.path.realpath(__file__)) to find base file dir. Python uses terminal current directory
     sqltxt = sqlfile.read()
     conn = sqlite_connect()
     c = conn.cursor()
@@ -54,6 +55,6 @@ def processCSV(reader):
 
 
 def chooseCSV():
-    with open("CourseMap.csv", newline='') as csvfile:
+    with open(os.path.dirname(os.path.realpath(__file__)) + '\..\CourseMap.csv', newline='') as csvfile:
       csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
       processCSV(csvreader)
