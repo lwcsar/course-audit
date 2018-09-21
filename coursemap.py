@@ -53,8 +53,8 @@ parser.add_argument('-v','--version', help='Print out the current version and ex
 parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
 parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
 parser.add_argument('--input', help='Import CSV file to application', type=str)
-parser.add_argument('--outputdir' help='Directory to output PDF files', type=str)
-parser.add_argument('--grade' help='The grade to process or all', type=str)
+parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
+parser.add_argument('--grade', help='The grade to process or all', type=str)
 
 args = parser.parse_args()
 if args.version:
