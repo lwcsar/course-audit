@@ -42,7 +42,7 @@ import lib.input as datainput
 import argparse
 
 # TODO: Move this method and import to appropriate class
-# import subprocess
+# import subprocess 
 def getVersion():
     # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
     # return subprocess.check_output(["C:\\Users\\Max Green\\AppData\\Local\\GitHubDesktop\\app-1.4.0\\resources\\app\\git\\cmd", "git", "describe"]).strip()
