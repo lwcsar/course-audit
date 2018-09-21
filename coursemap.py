@@ -54,7 +54,7 @@ parser.add_argument('--input', help='Import CSV file to application', type=str)
 parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
 parser.add_argument('--grade', help='The grade to process or all', type=str)
 
-args = parser.parse_args(['--init'])
+args = parser.parse_args()
 if args.version:
     print(getVersion())
     exit()
