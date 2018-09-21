@@ -54,6 +54,6 @@ def processCSV(reader):
 
 
 def chooseCSV():
-    with open("CourseMap.csv", newline='') as csvfile:
+    with open("CourseMap.csv", newline='') as csvfile: # FIXME: Coursemap will not work without the full path. Fix?
       csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
       processCSV(csvreader)

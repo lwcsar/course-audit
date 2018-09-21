@@ -61,6 +61,7 @@ if args.version:
     print(getVersion())
     exit()
 elif args.debug:
+    datainput.chooseCSV()
     pass # TODO: Output debugging information
 elif args.init:
     datainput.createSqliteTables()
