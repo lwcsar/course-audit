@@ -27,9 +27,9 @@ We whould utilize the argparse module to implement this functionality for us.
 https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
-# TODO: -h, --help          to show a brief help message
-# TODO: -v, --version       display version information and exit.
-# TODO: -d, --debug         print out debugging information
+-h, --help          to show a brief help message
+-v, --version       display version information and exit.
+-d, --debug         print out debugging information
 --init              Initialize our SQLite database
 # TODO: --input=<file>      CSV file to import into the application
 # TODO: --outputdir=<dir>   Directory to output our PDF files
@@ -41,9 +41,11 @@ import lib.input as datainput
 import argparse
 
 parser = argparse.ArgumentParser()
+parser.add_argument('-h','--help', help='Show a brief help message.', action='store_true') #I'm assuming action='store_true' is the same for all arguements.
+parser.add_argument('-v','--version', help='Display version information and exit.', action='store_true')
 parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
 parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-# TODO: Add more Arguments as defined in our comments above.
+# TODO: Add last three arguements listed in comments.
 
 args = parser.parse_args()
 # args = parser.parse_args(['--init'])
