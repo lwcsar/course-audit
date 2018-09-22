@@ -37,11 +37,11 @@ Application arguments shall include the following:
 --grade=<grade>     The grade to process or 'all'
 and...
 
-"""
+'''
 import os
-import argparse
 import lib.input as datainput
 import lib.database as database
+import argparse
 
 # TODO: Move this method and import to appropriate class
 def get_version():
@@ -61,20 +61,27 @@ def check_args(args=None):
 
 if __name__ == '__main__':
     args = check_args()
+    # TODO: Switch to numerous if statements. By using elif we can't process multiple arguments.
     if args.version:
-        print(get_version())
+        print(getVersion())
         exit()
-    if args.debug:
+    elif args.debug:
         debug += 1
-    if args.init:
+        pass # TODO: Output debugging information
+    elif args.init:
+        # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
+        # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
         database.create_sqlite_tables()
-    if args.input:
+    elif args.input:
+        # TODO: Determine the full path of the input filename and pass that into our method
         dir = os.path.dirname(os.path.abspath(__file__))
-        file = os.path.join(dir, str(args.input[0]))
-        datainput.import_csv(file)
-    if args.outputdir:
+        filename = os.path.join(dir, str(args.input[0]))
+        datainput.import_csv(filename)
+        pass
+    elif args.outputdir:
         pass # TODO: Set output Directory
-    if args.grade:
+    elif args.grade:
         pass # TODO: Set grade to process
     else:
+        # TODO: Find a better way to call our print_help function. This won't work once we remove all the elif statements
         parser.print_help()
