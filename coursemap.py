@@ -41,7 +41,7 @@ and...
 import lib.input as datainput
 import argparse
 
-# TODO: Move this method and import to appropriate class
+# TODO: Move this method and import to appropriate class. Change to snake_case
 def getVersion():
     # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
     return "0.1.0"
@@ -55,6 +55,7 @@ parser.add_argument('--outputdir', help='Directory to output PDF files', type=st
 parser.add_argument('--grade', help='The grade to process or all', type=str)
 
 args = parser.parse_args()
+# TODO: Switch to numerous if statements. By using elif we can't process multiple arguments.
 if args.version:
     print(getVersion())
     exit()
