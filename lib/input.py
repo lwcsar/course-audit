@@ -25,7 +25,7 @@ def sqlite_connect():
     return conn
 
 def createSqliteTables():
-    sqlfile = open(os.path.dirname(os.path.realpath(__file__)) + '\..\doc/sql.txt', "r") # NOTE: Use os.path.dirname(os.path.realpath(__file__)) to find base file dir. Python uses terminal current directory
+    sqlfile = open(os.path.dirname(os.path.realpath(__file__)) + '\..\doc\sql.txt', "r") # NOTE: Use os.path.dirname(os.path.realpath(__file__)) to find base file dir. Python uses terminal current directory
     sqltxt = sqlfile.read()
     conn = sqlite_connect()
     c = conn.cursor()
