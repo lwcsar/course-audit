@@ -39,13 +39,16 @@ and...
 
 '''
 import lib.input as datainput
+# TODO: Import our database module
 import argparse
 
-# TODO: Move this method and import to appropriate class
+# TODO: Move this method and import to appropriate class. Change to snake_case
 def getVersion():
     # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
     return "0.1.0"
 
+# TODO: Group all of our argument parsing into a single function and return args. It doesn't reduce our code size, but keeps it clean.
+# TODO: Properly comment the function. See lib.input.import_csv() as an example.
 parser = argparse.ArgumentParser()
 parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
 parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
@@ -54,20 +57,25 @@ parser.add_argument('--input', help='Import CSV file to application', type=str)
 parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
 parser.add_argument('--grade', help='The grade to process or all', type=str)
 
-args = parser.parse_args(['--init'])
+args = parser.parse_args()
+# TODO: Switch to numerous if statements. By using elif we can't process multiple arguments.
 if args.version:
     print(getVersion())
     exit()
 elif args.debug:
-    datainput.chooseCSV()
     pass # TODO: Output debugging information
 elif args.init:
-    datainput.createSqliteTables()
+    # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
+    # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
+    database.create_sqlite_tables()
 elif args.input:
-    pass # TODO: Input CSV file to application
+    # TODO: Determine the full path of the input filename and pass that into our method
+    datainput.import_csv(filename)
+    pass
 elif args.outputdir:
     pass # TODO: Set output Directory
 elif args.grade:
     pass # TODO: Set grade to process
 else:
+    # TODO: Find a better way to call our print_help function. This won't work once we remove all the elif statements
     parser.print_help()
