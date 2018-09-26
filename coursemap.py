@@ -65,22 +65,22 @@ if __name__ == '__main__':
     if args.version:
         print(getVersion())
         exit()
-    elif args.debug:
+    if args.debug:
         debug += 1
         pass # TODO: Output debugging information
-    elif args.init:
+    if args.init:
         # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
         # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
         database.create_sqlite_tables()
-    elif args.input:
+    if args.input:
         # TODO: Determine the full path of the input filename and pass that into our method
         dir = os.path.dirname(os.path.abspath(__file__))
         filename = os.path.join(dir, str(args.input[0]))
         datainput.import_csv(filename)
         pass
-    elif args.outputdir:
+    if args.outputdir:
         pass # TODO: Set output Directory
-    elif args.grade:
+    if args.grade:
         pass # TODO: Set grade to process
     else:
         # TODO: Find a better way to call our print_help function. This won't work once we remove all the elif statements

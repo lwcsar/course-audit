@@ -1,9 +1,10 @@
 import os
-import sys
 import csv
+import sys
 import sqlite3
 import logging
-from lib import database
+from . import database
+
 
 """Input Module
 
@@ -11,8 +12,6 @@ This module will read and process input data taken from CSV, ODBC, or other
 input sources. Processed inputs will be stored in a database for later use.
 
 """
-
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 # TODO: Switch all functions to snake_case naming convention
 # TODO: Add comments to describe our function. See docstring on import_csv for example.
@@ -35,10 +34,10 @@ def processCSV(reader):
             continue
 
         """Create the course"""
-        database.create_course(row)
         course_id = database.create_course(row)
         if row['Course'].find('Principles'):
             logging.debug(row['Course']+' '+row['Department']+' '+row['Grade Level']+' '+row['Credits'])
+
 
         """Skip if zero credits were earned."""
         # TODO: check for zero credit and ignore
@@ -57,7 +56,6 @@ def processCSV(reader):
         database.create_student_course(student_id,course_id,float(row['Credits']))
 
 
-
 """Import a CSV file into the application.
 
 Keyword arguments:
@@ -71,6 +69,6 @@ def import_csv(filename):
     # TODO: 2) If not exist, error and exit.
     # TODO: 3) Open and process the file. The original example may not work as shown.
     logging.debug(filename)
-    with open(os.path.dirname(os.path.realpath(__file__)) + '\..\CourseMap.csv', newline='') as csvfile:
+    with open(filename, newline='') as csvfile:
         csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-        processCSV(csvreader)
+        process_csv(csvreader)
