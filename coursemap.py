@@ -1,4 +1,3 @@
-
 '''
 This is the entrypoint into our application. This file will become largely
 static once we establish some of the basics. We will bootstrap
@@ -28,54 +27,61 @@ https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
 -h, --help          to show a brief help message
-# QUESTION: ArgumentParser automatically generates a help file. Throws error if you try and do this yourself
 -v, --version       display version information and exit.
 -d, --debug         print out debugging information
 --init              Initialize our SQLite database
 --input=<file>      CSV file to import into the application
 --outputdir=<dir>   Directory to output our PDF files
 --grade=<grade>     The grade to process or 'all'
-and...
-
 '''
 import lib.input as datainput
-# TODO: Import our database module
+inport lib.database as db
+import os
 import argparse
 
-# TODO: Move this method and import to appropriate class. Change to snake_case
-def getVersion():
-    # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
-    return "0.1.0"
+#Global Variables
+default_csv_path = os.path.dirname(os.path.realpath(__file__)) + '\CourseMap.csv'
 
-# TODO: Group all of our argument parsing into a single function and return args. It doesn't reduce our code size, but keeps it clean.
-# TODO: Properly comment the function. See lib.input.import_csv() as an example.
-parser = argparse.ArgumentParser()
-parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
-parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
-parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-parser.add_argument('--input', help='Import CSV file to application', type=str)
-parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
-parser.add_argument('--grade', help='The grade to process or all', type=str)
+"""Returns the arguments run on a command line process.
 
-args = parser.parse_args()
-# TODO: Switch to numerous if statements. By using elif we can't process multiple arguments.
+Keyword arguments:
+    None.
+
+Return values:
+    args- the arguments that are called.
+"""
+def arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
+    parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
+    parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
+    parser.add_argument('--input', help='Import CSV file to application', const="", type=str)
+    parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
+    parser.add_argument('--grade', help='The grade to process or all', type=str)
+
+    args = parser.parse_args()
+    return args
+
+#----#
+#Main#
+#----#
+args = arguments()
 if args.version:
-    print(getVersion())
+    print(datainput.get_version())
     exit()
-elif args.debug:
+if args.debug:
     pass # TODO: Output debugging information
-elif args.init:
+if args.init:
     # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
     # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
     database.create_sqlite_tables()
-elif args.input:
+if args.input:
     # TODO: Determine the full path of the input filename and pass that into our method
-    datainput.import_csv(filename)
-    pass
-elif args.outputdir:
+    if(args.input == ''):
+        datainput.import_csv(default_csv_path)
+    else:
+        datainput.import_csv(args.input)
+if args.outputdir:
     pass # TODO: Set output Directory
-elif args.grade:
+if args.grade:
     pass # TODO: Set grade to process
-else:
-    # TODO: Find a better way to call our print_help function. This won't work once we remove all the elif statements
-    parser.print_help()
