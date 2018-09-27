@@ -28,8 +28,8 @@ CREATE UNIQUE INDEX idx_course_grade on courses(course_name,course_grade_level);
 
 CREATE TABLE IF NOT EXISTS students(
   id INTEGER PRIMARY KEY,
-  last_name INTEGER NOT NULL,
-  first_name INTEGER NOT NULL,
+  last_name varchar(64) NOT NULL,
+  first_name varchar(32) NOT NULL,
   grade_level INTEGER NOT NULL,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
