@@ -35,9 +35,11 @@ Application arguments shall include the following:
 --grade=<grade>     The grade to process or 'all'
 '''
 import lib.input as datainput
-inport lib.database as db
+#import lib.database as db
 import os
 import argparse
+import logging
+from logging.config import fileConfig
 
 #Global Variables
 default_csv_path = os.path.dirname(os.path.realpath(__file__)) + '\CourseMap.csv'
@@ -55,33 +57,51 @@ def arguments():
     parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
     parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-    parser.add_argument('--input', help='Import CSV file to application', const="", type=str)
+    parser.add_argument('--input', help='Import CSV file to application. Follow with file path', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
     parser.add_argument('--grade', help='The grade to process or all', type=str)
 
     args = parser.parse_args()
     return args
 
+"""Runs the Arguments using the args from argparse module.
+
+Keyword arguments:
+    args- the arguments that are called from the arguments() function.
+
+Return values:
+    args- the arguments that are called.
+"""
+def RunArguments():
+    if args.debug:
+        #Set up logger
+        logging.getLogger(__name__)
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+        pass
+    else:
+        logging.getLogger(__name__)
+        logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
+        pass
+    if args.version:
+        print(datainput.get_version())
+        exit()
+    if args.init:
+        # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
+        # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
+        database.create_sqlite_tables()
+    if args.input:
+        # TODO: Determine the full path of the input filename and pass that into our method
+        if(args.input == ''):
+            datainput.import_csv(default_csv_path)
+        else:
+            datainput.import_csv(args.input)
+    if args.outputdir:
+        pass # TODO: Set output Directory
+    if args.grade:
+        pass # TODO: Set grade to process
+
 #----#
 #Main#
 #----#
-args = arguments()
-if args.version:
-    print(datainput.get_version())
-    exit()
-if args.debug:
-    pass # TODO: Output debugging information
-if args.init:
-    # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
-    # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
-    database.create_sqlite_tables()
-if args.input:
-    # TODO: Determine the full path of the input filename and pass that into our method
-    if(args.input == ''):
-        datainput.import_csv(default_csv_path)
-    else:
-        datainput.import_csv(args.input)
-if args.outputdir:
-    pass # TODO: Set output Directory
-if args.grade:
-    pass # TODO: Set grade to process
+args = arguments() #Find Arguments
+RunArguments() #Run Arguments

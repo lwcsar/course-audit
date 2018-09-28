@@ -1,6 +1,7 @@
 import csv
 import sqlite3
 import os
+import logging
 
 """Input Module
 
@@ -62,10 +63,10 @@ def import_csv(filename):
     # TODO: 1) Make sure the file exists
     # TODO: 2) If not exist, error and exit.
     # TODO: 3) Open and process the file. The original example may not work as shown.
-    if os.path.isfile(filename)
-    with open(os.path.dirname(os.path.realpath(__file__)) + '\..\CourseMap.csv', newline='') as csvfile:
-        csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-        processCSV(csvreader)
+    if os.path.isfile(filename):
+        with open(os.path.dirname(os.path.realpath(__file__)) + '\..\CourseMap.csv', newline='') as csvfile:
+            csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+            processCSV(csvreader)
 
 """Returns the Applications current distribute version.
 
@@ -76,5 +77,4 @@ Return values:
     None.
 """
 def get_version():
-    # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
     return "0.1.0"

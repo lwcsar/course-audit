@@ -6,10 +6,12 @@ import logging
 def sqlite_connect(db):
     # TODO: Check for default sqlite database. if not exist, error and exit
     # QUESTION: Do we auto-create the database and schema if the database does not exist? If so, we just call our create_sqlite_tables method.
-
-    # Connect to DB and return
-    conn = sqlite3.connect(db)
-    return conn
+    if os.path.isfile(db):
+        # Connect to DB and return
+        conn = sqlite3.connect(db)
+        return conn
+    else:
+        return logging.error("No database detected at this location")
 
 
 # TODO: Add function definition comments
