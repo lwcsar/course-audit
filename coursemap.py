@@ -75,11 +75,9 @@ Return values:
 def RunArguments():
     if args.debug:
         #Set up logger
-        logging.getLogger(__name__)
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
         pass
     else:
-        logging.getLogger(__name__)
         logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
         pass
     if args.version:
