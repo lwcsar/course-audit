@@ -14,7 +14,14 @@ input sources. Processed inputs will be stored in a database for later use.
 """
 
 # TODO: Switch all functions to snake_case naming convention
-# TODO: Add comments to describe our function. See docstring on import_csv for example.
+"""Process a CSV file, turning into a SQLite database.
+
+Keyword arguments:
+    reader - a csv reader that translates the csv into usable data.
+
+Return values:
+    None.
+"""
 def processCSV(reader):
     last_id = 0
 
@@ -68,7 +75,18 @@ def import_csv(filename):
     # TODO: 1) Make sure the file exists
     # TODO: 2) If not exist, error and exit.
     # TODO: 3) Open and process the file. The original example may not work as shown.
-    logging.debug(filename)
     with open(filename, newline='') as csvfile:
         csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-        process_csv(csvreader)
+        processCSV(csvreader)
+
+
+"""Returns the Applications current distribute version.
+
+Keyword arguments:
+    None.
+
+Return values:
+    None.
+"""
+def get_version():
+    return "0.1.0"

@@ -1,5 +1,4 @@
-
-"""
+'''
 This is the entrypoint into our application. This file will become largely
 static once we establish some of the basics. We will bootstrap
 the app and import the rest of the modules from here. Most work will be in
@@ -28,60 +27,81 @@ https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
 -h, --help          to show a brief help message
-# QUESTION: ArgumentParser automatically generates a help file. Throws error if you try and do this yourself
 -v, --version       display version information and exit.
 -d, --debug         print out debugging information
 --init              Initialize our SQLite database
 --input=<file>      CSV file to import into the application
 --outputdir=<dir>   Directory to output our PDF files
 --grade=<grade>     The grade to process or 'all'
-and...
-
 '''
 import os
 import lib.input as datainput
 import lib.database as database
 import argparse
+import logging
+from logging.config import fileConfig
 
-# TODO: Move this method and import to appropriate class
-def get_version():
-    # Tried coding this in. Works locally, but requires git to be installed. We could use a module such as pygit, but may need to be changed on release
-    return "0.1.0"
+#Global Variables
+default_csv_path = os.path.dirname(os.path.realpath(__file__)) + '\CourseMap.csv'
 
-def check_args(args=None):
-    parser = argparse.ArgumentParser(description='Course Map report generating tool.')
+"""Returns the arguments run on a command line process.
+
+Keyword arguments:
+    None.
+
+Return values:
+    args- the arguments that are called.
+"""
+def arguments():
+    parser = argparse.ArgumentParser()
     parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
     parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-    parser.add_argument('--input', nargs=1, type=str, default='CourseMap.csv', help='Initialize our SQLite database.')
+    parser.add_argument('--input', help='Import CSV file to application. Follow with file path', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
     parser.add_argument('--grade', help='The grade to process or all', type=str)
-    return parser.parse_args()
 
+    args = parser.parse_args()
+    return args
 
-if __name__ == '__main__':
-    args = check_args()
-    # TODO: Switch to numerous if statements. By using elif we can't process multiple arguments.
-    if args.version:
-        print(getVersion())
-        exit()
+"""Runs the Arguments using the args from argparse module.
+
+Keyword arguments:
+    args- the arguments that are called from the arguments() function.
+
+Return values:
+    args- the arguments that are called.
+"""
+def RunArguments():
     if args.debug:
-        debug += 1
-        pass # TODO: Output debugging information
+        #Set up logger
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+        pass
+    else:
+        logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
+        pass
+    if args.version:
+        print(datainput.get_version())
+        exit()
     if args.init:
         # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
         # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
         database.create_sqlite_tables()
     if args.input:
         # TODO: Determine the full path of the input filename and pass that into our method
-        dir = os.path.dirname(os.path.abspath(__file__))
-        filename = os.path.join(dir, str(args.input[0]))
-        datainput.import_csv(filename)
-        pass
+        if(args.input == ''):
+            datainput.import_csv(default_csv_path)
+        else:
+            datainput.import_csv(args.input)
     if args.outputdir:
         pass # TODO: Set output Directory
     if args.grade:
         pass # TODO: Set grade to process
-    else:
-        # TODO: Find a better way to call our print_help function. This won't work once we remove all the elif statements
-        parser.print_help()
+
+
+#----#
+#Main#
+#----#
+if __name__ == '__main__':
+    args = arguments() #Find Arguments
+    RunArguments() #Run Arguments
