@@ -57,7 +57,7 @@ def arguments():
     parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
     parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-    parser.add_argument('--input', help='Import CSV file to application. Follow with file path', type=str)
+    parser.add_argument('--input', help='Import CSV file to application. Follow with file path',nargs='?', const='Default', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
     parser.add_argument('--grade', help='The grade to process or all', type=str)
 
@@ -90,8 +90,7 @@ def RunArguments():
         # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
         database.create_sqlite_tables()
     if args.input:
-        # TODO: Determine the full path of the input filename and pass that into our method
-        if(args.input == ''):
+        if(args.input == 'Default'):
             datainput.import_csv(default_csv_path)
         else:
             datainput.import_csv(args.input)
