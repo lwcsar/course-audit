@@ -1,8 +1,10 @@
-import lib.input as datainput
-import lib.database as db
 import os
+import sys
 import argparse
 import logging
+from lib.input import Input
+from lib.database import Database
+from logging.config import fileConfig
 
 '''
 This is the entrypoint into our application. This file will become largely
@@ -42,18 +44,19 @@ Application arguments shall include the following:
 '''
 
 #Global Variables
-default_csv_path = os.path.dirname(os.path.realpath(__file__)) + '\CourseMap.csv'
-default_database_directory = os.path.dirname(os.path.realpath(__file__)) + 'doc/'
+default_csv_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'CourseMap.csv')
+default_database_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "doc")
 
-"""Returns the arguments run on a command line process.
 
-Keyword arguments:
-    None.
-
-Return values:
-    args- the arguments that are called.
-"""
 def arguments():
+    """Returns the arguments run on a command line process.
+
+    Keyword arguments:
+        None.
+
+    Return values:
+        args- the arguments that are called.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
     parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
@@ -66,19 +69,26 @@ def arguments():
     args = parser.parse_args()
     return args
 
-"""Runs the Arguments using the args from argparse module.
 
-Keyword arguments:
-    args- the arguments that are called from the arguments() function.
+def run(session, default_database_directory):
+    """Runs the application using the given arguments.
 
-Return values:
-    args- the arguments that are called.
-"""
-def RunArguments():
+    Keyword arguments:
+        args- the arguments that are called from the arguments() function.
+
+    Return values:
+        None.
+    """
+    if args.version:
+        from lib.database_schema import Base, Setting
+        ver = session.query(Settting).all() #.filter(Setting.key == 'version').one()
+        print("Version: "+ver.value)
+        print(datainput.get_version())
+        exit()
+
     if args.debug:
         #Set up logger
-        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
-        pass
+        logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
     else:
         logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
         pass
@@ -89,19 +99,27 @@ def RunArguments():
         default_database_directory = args.dbdir
         pass
     if args.init:
-        database.create_sqlite_tables(default_database_directory)
+        import lib.database_schema as dbschema
+        dbschema.run(default_database_directory)
+        db.create_default_settings()
     if args.input:
-        if(args.input == 'Default'):
-            datainput.import_csv(default_csv_path)
+        myinput = Input(session)
+        if args.input == 'Default':
+            myinput.csv_file(default_csv_file)
         else:
-            datainput.import_csv(args.input)
+            myinput.csv_file(
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), str(args.input))
+                )
+
     if args.outputdir:
         pass # TODO: Set output Directory
-    if args.grade:
-        pass # TODO: Set grade to process
+
 
 #----#
 #Main#
 #----#
-args = arguments() #Find Arguments
-RunArguments() #Run Arguments
+if __name__ == '__main__':
+    args = arguments() #Find Arguments
+    db = Database(default_database_directory)
+    session = db.session()
+    run(session, default_database_directory) #Run the application
