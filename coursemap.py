@@ -35,68 +35,84 @@ Application arguments shall include the following:
 --grade=<grade>     The grade to process or 'all'
 '''
 import os
-import lib.input as datainput
-import lib.database as database
+import sys
 import argparse
 import logging
+from lib.input import Input
+from lib.database import Database
 from logging.config import fileConfig
 
 #Global Variables
 default_csv_path = os.path.dirname(os.path.realpath(__file__)) + '\CourseMap.csv'
+default_database = os.path.join(os.path.dirname(os.path.abspath(__file__)), "coursemap.db")
 
-"""Returns the arguments run on a command line process.
 
-Keyword arguments:
-    None.
-
-Return values:
-    args- the arguments that are called.
-"""
 def arguments():
+    """Returns the arguments run on a command line process.
+
+    Keyword arguments:
+        None.
+
+    Return values:
+        args- the arguments that are called.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
     parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-    parser.add_argument('--input', help='Import CSV file to application. Follow with file path', type=str)
+    parser.add_argument('--db', nargs=1, help='The SQLite database to use.', type=str)
+    parser.add_argument('--input', nargs='*', help='Import CSV file to application. Follow with file path', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
     parser.add_argument('--grade', help='The grade to process or all', type=str)
 
     args = parser.parse_args()
     return args
 
-"""Runs the Arguments using the args from argparse module.
 
-Keyword arguments:
-    args- the arguments that are called from the arguments() function.
+def run(session):
+    """Runs the application using the given arguments.
 
-Return values:
-    args- the arguments that are called.
-"""
-def RunArguments():
-    if args.debug:
-        #Set up logger
-        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
-        pass
-    else:
-        logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
-        pass
+    Keyword arguments:
+        args- the arguments that are called from the arguments() function.
+
+    Return values:
+        None.
+    """
     if args.version:
+        from lib.database_schema import Base, Setting
+        ver = session.query(Settting).all() #.filter(Setting.key == 'version').one()
+        print("Version: "+ver.value)
         print(datainput.get_version())
         exit()
+
+    if args.debug:
+        #Set up logger
+        logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+    else:
+        logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
+
     if args.init:
         # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
         # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
-        database.create_sqlite_tables()
-    if args.input:
-        # TODO: Determine the full path of the input filename and pass that into our method
-        if(args.input == ''):
-            datainput.import_csv(default_csv_path)
-        else:
-            datainput.import_csv(args.input)
-    if args.outputdir:
-        pass # TODO: Set output Directory
+        import lib.database_schema as dbschema
+        dbschema.run(default_database)
+        db.create_default_settings()
+
     if args.grade:
         pass # TODO: Set grade to process
+
+    if args.input:
+        # TODO: Determine the full path of the input filename and pass that into our method
+        myinput = Input(session)
+        if str(args.input[0]) == '':
+            myinput.csv_file(default_csv_path)
+        else:
+            myinput.csv_file(
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), args.input[0])
+                )
+
+    if args.outputdir:
+        pass # TODO: Set output Directory
 
 
 #----#
@@ -104,4 +120,6 @@ def RunArguments():
 #----#
 if __name__ == '__main__':
     args = arguments() #Find Arguments
-    RunArguments() #Run Arguments
+    db = Database(default_database)
+    session = db.session()
+    run(session) #Run the application

@@ -3,8 +3,10 @@ import csv
 import sys
 import sqlite3
 import logging
-from . import database
+from .database_schema import Base, Student, Course
 
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.exc import MultipleResultsFound
 
 """Input Module
 
@@ -12,72 +14,111 @@ This module will read and process input data taken from CSV, ODBC, or other
 input sources. Processed inputs will be stored in a database for later use.
 
 """
+class Input():
 
-# TODO: Switch all functions to snake_case naming convention
-"""Process a CSV file, turning into a SQLite database.
+    def __init__(self, session):
+        self.session = session
 
-Keyword arguments:
-    reader - a csv reader that translates the csv into usable data.
 
-Return values:
-    None.
-"""
-def processCSV(reader):
-    last_id = 0
+    def course_handler(self, data):
+        """Process course creation for input data."""
 
-    """Walk through each line in the CSV file reader and process them
-    one by one based on our processing rules.
-
-    CSV Processing Rules:
-        if grade level 1 < 9: ignore
-        if credits == 0: discard from user
-        create courses in SQL for everything in grade 9+
-        Save First and Last names separate so the CSV field must be split.
-        Discard the Status and Year columns.
-    """
-    for row in reader:
         """Skip all lines defining non-high school courses."""
-        if int(row['Grade Level 1']) < 9:
-            continue
+        if int(data['Grade Level 1']) < 9:
+            return None
 
-        """Create the course"""
-        course_id = database.create_course(row)
-        if row['Course'].find('Principles'):
-            logging.debug(row['Course']+' '+row['Department']+' '+row['Grade Level']+' '+row['Credits'])
+        try:
+            """Test if the course exists before attempting to create the course."""
+            course = self.session.query(Course).filter(
+                    Course.course_name == data['Course']).filter(
+                    Course.course_department == data['Department']).filter(
+                    Course.course_grade_level == data['Grade Level 1']).one()
+        except NoResultFound:
+            """Create the course"""
+            course = Course(course_name=data['Course'],
+                course_department=data['Department'],
+                course_grade_level=data['Grade Level 1'],
+                course_credit=data['Credits'])
+            self.session.add(course)
+            logging.debug(data['Course']+' '+data['Department']+' '+data['Grade Level 1']+' '+data['Credits'])
 
+        return course
+
+
+    def student_handler(self, data):
+        """Process student creation for input data."""
 
         """Skip if zero credits were earned."""
-        # TODO: check for zero credit and ignore
-        if float(row['Credits']) == 0:
-            continue
+        if float(data['Credits']) == 0:
+            return None
 
-        """Create our student record"""
-        # TODO: Add student to database
-        if int(row['Student ID (System)']) != last_id:
+        student_id = int(data['Student ID (System)'])
+        try:
+            """Test if the student exists before attempting to create the student."""
+            student = self.session.query(Student).filter(Student.id == student_id).one()
+        except NoResultFound:
+            """Create our student record"""
+            (last_name, first_name) = data['LastName, FirstName'].split(',')
+            logging.critical(str(student_id)+','+first_name.strip())
             # Insert the new user into the DB.
-            student_id = database.create_student(row)
-            last_id = int(row['Student ID (System)'])
+            student = Student(id=student_id, last_name=last_name,
+                first_name=first_name, grade_level=data['Grade Level'])
+            student_id = self.session.add(student)
 
-        """Associate the course with the student and store that."""
-        # TODO: Add student/course association in db.
-        database.create_student_course(student_id,course_id,float(row['Credits']))
+        return student
 
 
-"""Import a CSV file into the application.
+    def process(self, reader):
+        """Process a CSV file, turning into a SQLite database.
 
-Keyword arguments:
-    filename - a string containing the full path to the CSV file to be imported.
+        Keyword arguments:
+            reader - a csv reader that translates the csv into usable data.
 
-Return values:
-    None.
-"""
-def import_csv(filename):
-    # TODO: 1) Make sure the file exists
-    # TODO: 2) If not exist, error and exit.
-    # TODO: 3) Open and process the file. The original example may not work as shown.
-    with open(filename, newline='') as csvfile:
-        csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-        processCSV(csvreader)
+        Return values:
+            None.
+        """
+
+        """Walk through each line in the CSV file reader and process them
+        one by one based on our processing rules.
+
+        CSV Processing Rules:
+            if grade level 1 < 9: ignore
+            if credits == 0: discard from user
+            create courses in SQL for everything in grade 9+
+            Save First and Last names separate so the CSV field must be split.
+            Discard the Status and Year columns.
+        """
+
+        for row in reader:
+
+            try:
+                course = self.course_handler(row)
+                student = self.student_handler(row)
+                if student and course:
+                    course.students.extend([student]) # Add the student to the course
+                self.session.commit()
+            except:
+                self.session.rollback()
+                raise
+            # finally:
+            #     session.close()
+
+
+    def csv_file(self, filename):
+        """Import a CSV file into the application.
+
+        Keyword arguments:
+            filename - a string containing the full path to the CSV file to be imported.
+
+        Return values:
+            None.
+        """
+        # TODO: 1) Make sure the file exists
+        # TODO: 2) If not exist, error and exit.
+        # TODO: 3) Open and process the file. The original example may not work as shown.
+        with open(filename, newline='') as csvfile:
+            csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+            self.process(csvreader)
 
 
 """Returns the Applications current distribute version.

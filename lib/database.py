@@ -1,57 +1,45 @@
 import os
 import sqlite3
 import logging
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
-class Database:
-    def __init__(self):
-        # When our module is loaded, connect to the database and create a cursor
-        # object so we can use the connection.
-        self.conn = sqlite_connect(db)
-        self.c = conn.cursor()
+class Database():
+    """"""
 
-    # TODO: Add function definition comments
-    def sqlite_connect(db):
-        # TODO: Check for default sqlite database. if not exist, error and exit
-        # QUESTION: Do we auto-create the database and schema if the database does not exist? If so, we just call our create_sqlite_tables method.
+    def __init__(self, db_name):
+        """"""
+        self.engine = create_engine('sqlite:///'+ db_name)
+        self.session = sessionmaker(bind=self.engine)
+        self.s = self.session()
 
-        # Connect to DB and return
-        conn = sqlite3.connect(db)
-        return conn
+    def session():
+        return self.s
 
-
-    # TODO: Add function definition comments
-    def create_sqlite_tables():
-        sqlfile = open("doc/sql.txt", "r")
-        sqltxt = sqlfile.read()
-        c.executescript(sqltxt)
-        c.commit()
-
-
-    # TODO: Add function definition comments
-    def create_course(row):
-        logging.debug(row['Course']+' '+row['Department']+' '+row['Grade Level']+' '+row['Credits'])
-        # TODO: Complete the database method.
-        c.execute("REPLACE INTO courses(course_name,course_department,course_grade_level,course_credit) VALUES (?,?,?,?)",
-            (row['Course'].strip(),row['Department'].strip(),int(row['Grade Level 1']), float(row['Credits'])))
-        conn.commit()
-        return c.lastrowid
-
-    # TODO: Add function definition comments
-    def create_student(row):
-        (last_name, first_name) = row['LastName, FirstName'].split(',')
-        logging.debug(row['Student ID (System)']+','+
-            last_name.strip()+','+first_name.strip()+','+row['Grade Level'])
-        # TODO: Complete the database method.
-        c.execute("REPLACE INTO students(id,last_name,first_name,grade_level) VALUES (?,?,?,?)",
-            (int(row['Student ID (System)']),last_name.strip(),first_name.strip(),int(row['Grade Level'])))
-        conn.commit()
-        return c.lastrowid
-
-    # TODO: Add function definition comments
-    def create_student_course(student_id,course_id,credits):
-        logging.debug(student_id+' '+course_id+' '+credits)
-        # TODO: Complete the database method.
-        c.execute("REPLACE INTO student_courses(student_id,course_id,credits_earned) VALUES (?,?,?)",
-            (student_id,course_id,credits))
-        conn.commit()
-        return c.lastrowid
+    def create_default_settings(self):
+        from .database_schema import Base, Setting
+        self.s.query(Setting).delete()
+        settings = [
+            Setting(key='last_import', value=''),
+            Setting(key='color_ninth', value='red'),
+            Setting(key='color_tenth', value='green'),
+            Setting(key='color_eleventh', value='blue'),
+            Setting(key='color_twelfth', value='yellow'),
+            Setting(key='minimum_core_total', value=22.5),
+            Setting(key='minimum_elective_total', value=6.5),
+            Setting(key='minimum_total', value=29),
+            Setting(key='minimum_dept_bible', value=4),
+            Setting(key='minimum_dept_mathematics', value=4),
+            Setting(key='minimum_dept_language_arts', value=4),
+            Setting(key='minimum_dept_social_studies', value=4),
+            Setting(key='minimum_dept_science', value=3),
+            Setting(key='minimum_dept_foreign_language', value=2),
+            Setting(key='minimum_dept_physical_education', value=1),
+            Setting(key='minimum_dept_oral_communications', value=0.5),
+            Setting(key='minimum_dept_fine_arts', value=0.5),
+            Setting(key='minimum_dept_practical_arts', value=1),
+            Setting(key='minimum_dept_technology', value=0.5),
+            Setting(key='minimum_dept_other', value=0),
+        ]
+        self.s.bulk_save_objects(settings)
+        self.s.commit()
