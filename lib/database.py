@@ -2,6 +2,12 @@ import os
 import sqlite3
 import logging
 
+"""Database Module
+
+This module will handle the creation, reading, and manipulation of our SQLite Database
+
+"""
+
 """Connect to the SQLite database.
 
 Keyword arguments:
@@ -17,7 +23,8 @@ def sqlite_connect(db):
         conn = sqlite3.connect(db)
         return conn
     else:
-        logging.error("No database detected at this location:" + db)
+        logging.info("Creating database at this location:" + db)
+        create_sqlite_tables(os.path.dirname(os.path.realpath(db)))
         exit()
 
 
