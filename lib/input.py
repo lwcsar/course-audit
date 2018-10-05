@@ -10,7 +10,6 @@ input sources. Processed inputs will be stored in a database for later use.
 
 """
 
-# TODO: Switch all functions to snake_case naming convention
 """Process a CSV file, turning into a SQLite database.
 
 Keyword arguments:
@@ -19,7 +18,7 @@ Keyword arguments:
 Return values:
     None.
 """
-def processCSV(reader):
+def process_csv(reader):
     firstID = 0
 
     """Walk through each line in the CSV file reader and process them
@@ -60,13 +59,13 @@ Return values:
     None.
 """
 def import_csv(filename):
-    # TODO: 1) Make sure the file exists
-    # TODO: 2) If not exist, error and exit.
-    # TODO: 3) Open and process the file. The original example may not work as shown.
     if os.path.isfile(filename):
-        with open(os.path.dirname(os.path.realpath(__file__)) + '\..\CourseMap.csv', newline='') as csvfile:
+        with open(filename, newline='') as csvfile:
             csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-            processCSV(csvreader)
+            process_csv(csvreader)
+    else:
+        logging.error("File \"" + filename + "\" does not exist")
+        exit()
 
 """Returns the Applications current distribute version.
 

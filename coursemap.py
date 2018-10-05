@@ -1,3 +1,9 @@
+import lib.input as datainput
+import lib.database as db
+import os
+import argparse
+import logging
+
 '''
 This is the entrypoint into our application. This file will become largely
 static once we establish some of the basics. We will bootstrap
@@ -34,15 +40,10 @@ Application arguments shall include the following:
 --outputdir=<dir>   Directory to output our PDF files
 --grade=<grade>     The grade to process or 'all'
 '''
-import lib.input as datainput
-#import lib.database as db
-import os
-import argparse
-import logging
-from logging.config import fileConfig
 
 #Global Variables
 default_csv_path = os.path.dirname(os.path.realpath(__file__)) + '\CourseMap.csv'
+default_database_directory = os.path.dirname(os.path.realpath(__file__)) + 'doc/'
 
 """Returns the arguments run on a command line process.
 
@@ -59,6 +60,7 @@ def arguments():
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
     parser.add_argument('--input', help='Import CSV file to application. Follow with file path',nargs='?', const='Default', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
+    parser.add_argument('--dbdir', help='Directory to store the database file', type=str)
     parser.add_argument('--grade', help='The grade to process or all', type=str)
 
     args = parser.parse_args()
@@ -83,10 +85,11 @@ def RunArguments():
     if args.version:
         print(datainput.get_version())
         exit()
+    if args.dbdir:
+        default_database_directory = args.dbdir
+        pass
     if args.init:
-        # QUESTION: Do we allow for alternate locations for the database file? If so, we need a new cmd line argument.
-        # QUESTION: If we allow an alternate db location, we should pass that location into our create function.
-        database.create_sqlite_tables()
+        database.create_sqlite_tables(default_database_directory)
     if args.input:
         if(args.input == 'Default'):
             datainput.import_csv(default_csv_path)
