@@ -33,20 +33,22 @@ def process_csv(reader):
     """
     for row in reader:
         """Skip all lines defining non-high school courses."""
-        if int(row['Grade Level 1']) < 9:
+        """If the pre 9th grade class doesn't have credits it is counted as high school"""
+        if int(row['Grade Level 1']) < 9 and int(row['Credits']) != 0:
             continue
 
         """Create the course"""
         database.create_course(row)
 
         """Skip if zero credits were earned."""
-        # TODO: check for zero credit and ignore
+        if int(row['Credits']) != 0:
+            continue
 
         """Create our student record"""
-        # TODO: Add student to database
+        database.create_student(row)
 
         """Associate the course with the student and store that."""
-        # TODO: Add student/course association in db.
+        database.create_student_course(int(row['Student ID (System)']),int(row['Course']),int(row['Credits']))
 
 
 

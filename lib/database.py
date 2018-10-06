@@ -17,7 +17,6 @@ Return values:
     conn-the connection to the SQLite database.
 """
 def sqlite_connect(db):
-    # QUESTION: Do we auto-create the database and schema if the database does not exist? If so, we just call our create_sqlite_tables method.
     if os.path.isfile(db):
         # Connect to DB and return
         conn = sqlite3.connect(db)
