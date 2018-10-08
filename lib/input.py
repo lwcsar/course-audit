@@ -92,9 +92,12 @@ class Input():
         for row in reader:
 
             try:
+                logging.debug("Process Course")
                 course = self.course_handler(row)
+                logging.debug("Process Student")
                 student = self.student_handler(row)
                 if student and course:
+                    logging.debug("Connect Course and Student")
                     course.students.extend([student]) # Add the student to the course
                 self.session.commit()
             except:
@@ -113,12 +116,13 @@ class Input():
         Return values:
             None.
         """
-        # TODO: 1) Make sure the file exists
-        # TODO: 2) If not exist, error and exit.
-        # TODO: 3) Open and process the file. The original example may not work as shown.
-        with open(filename, newline='') as csvfile:
-            csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-            self.process(csvreader)
+        if os.path.isfile(filename):
+            with open(filename, newline='') as csvfile:
+                csvreader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+                self.process(csvreader)
+        else:
+            logging.error("File does not exist: " + filename)
+            exit()
 
 
 """Returns the Applications current distribute version.

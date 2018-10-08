@@ -3,6 +3,7 @@ import sys
 import argparse
 import logging
 from lib.input import Input
+from lib.process import Process
 from lib.database import Database
 from logging.config import fileConfig
 
@@ -81,8 +82,9 @@ def run(session, default_database_directory):
     """
     if args.version:
         from lib.database_schema import Base, Setting
-        ver = session.query(Settting).all() #.filter(Setting.key == 'version').one()
-        print("Version: "+ver.value)
+        #ver = session.query(Setting).all() #.filter(Setting.key == 'version').one()
+        #print("Version: "+ver.value)
+        # TODO: Fix Version from settings
         print(datainput.get_version())
         exit()
 
@@ -110,7 +112,6 @@ def run(session, default_database_directory):
             myinput.csv_file(
                 os.path.join(os.path.dirname(os.path.abspath(__file__)), str(args.input))
                 )
-
     if args.outputdir:
         pass # TODO: Set output Directory
 
