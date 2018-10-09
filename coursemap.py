@@ -64,7 +64,7 @@ def arguments():
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
     parser.add_argument('--input', help='Import CSV file to application. Follow with file path',nargs='?', const='Default', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
-    parser.add_argument('--dbdir', help='Directory to store the database file', type=str)
+    parser.add_argument('--DataBasedir', help='Directory to store the database file', type=str)
     parser.add_argument('--grade', help='The grade to process or all', type=str)
 
     args = parser.parse_args()
@@ -81,11 +81,11 @@ def run(session, default_database_directory):
         None.
     """
     if args.version:
-        from lib.database_schema import Base, Setting
+        #from lib.database_schema import Base, Setting
         #ver = session.query(Setting).all() #.filter(Setting.key == 'version').one()
         #print("Version: "+ver.value)
         # TODO: Fix Version from settings
-        print(datainput.get_version())
+        print(myInput.get_version())
         exit()
 
     if args.debug:
@@ -94,18 +94,14 @@ def run(session, default_database_directory):
     else:
         logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(levelname)s %(message)s')
         pass
-    if args.version:
-        print(datainput.get_version())
-        exit()
     if args.dbdir:
         default_database_directory = args.dbdir
         pass
     if args.init:
         import lib.database_schema as dbschema
         dbschema.run(default_database_directory)
-        db.create_default_settings()
+        Database.create_default_settings()
     if args.input:
-        myinput = Input(session)
         if args.input == 'Default':
             myinput.csv_file(default_csv_file)
         else:
@@ -121,6 +117,8 @@ def run(session, default_database_directory):
 #----#
 if __name__ == '__main__':
     args = arguments() #Find Arguments
-    db = Database(default_database_directory)
-    session = db.session()
+    Database = Database(default_database_directory)
+    session = Database.session()
+    myInput = Input(session)
+    myProcess = Process(session)
     run(session, default_database_directory) #Run the application

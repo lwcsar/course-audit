@@ -19,7 +19,6 @@ class Input():
     def __init__(self, session):
         self.session = session
 
-
     def course_handler(self, data):
         """Process course creation for input data."""
 
@@ -125,13 +124,13 @@ class Input():
             exit()
 
 
-"""Returns the Applications current distribute version.
+    """Returns the Applications current distribute version.
 
-Keyword arguments:
-    None.
+    Keyword arguments:
+        None.
 
-Return values:
-    None.
-"""
-def get_version():
-    return "0.1.0"
+    Return values:
+        None.
+    """
+    def get_version(self):
+        return "0.1.0"

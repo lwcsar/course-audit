@@ -12,10 +12,10 @@ generation, course planning, settings maintenance.
 
 '''
 class Process():
-    def process_setup():
-        session = db.session
+    def __init__(self, session):
+        self.session = session
     def get_student(student_id):
-        from lib.database_schema import Base, Course
+        from lib.database_schema import Base, Student
         student = session.query(Student).filter(Student.id == student_id).one()
         return student
 
@@ -27,7 +27,8 @@ class Process():
 
     def get_student_courses(student_id):
         """Returns the courses that a student has taken"""
-        # TODO: get an array of courses that a student has taken
+        student = get_student(student_id)
+
         return courses
 
     def process_student(student_id):
