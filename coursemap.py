@@ -64,7 +64,7 @@ def arguments():
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
     parser.add_argument('--input', help='Import CSV file to application. Follow with file path',nargs='?', const='Default', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
-    parser.add_argument('--DataBasedir', help='Directory to store the database file', type=str)
+    parser.add_argument('--dbdir', help='Directory to store the database file', type=str)
     parser.add_argument('--grade', help='The grade to process or all', type=str)
 
     args = parser.parse_args()
