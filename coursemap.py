@@ -83,16 +83,8 @@ def run(session, default_database_directory):
         None.
     """
     if args.version:
-<<<<<<< HEAD
-        #from lib.database_schema import Base, Setting
-        #ver = session.query(Setting).all() #.filter(Setting.key == 'version').one()
-        #print("Version: "+ver.value)
-        # TODO: Fix Version from settings
-        print(myInput.get_version())
-=======
         from lib.database_schema import Base, Setting
-        print(datainput.get_version())
->>>>>>> 61b26ef8764592295ec5353dc508667413b13b01
+        print(myinput.get_version())
         exit()
 
     if args.debug:
@@ -140,16 +132,9 @@ def run(session, default_database_directory):
 #----#
 if __name__ == '__main__':
     args = arguments() #Find Arguments
-<<<<<<< HEAD
-    Database = Database(default_database_directory)
-    session = Database.session()
-    myInput = Input(session)
-    myProcess = Process(session)
-=======
     db = Database(default_database_directory)
     session = db.session()
     myinput = Input(session)
     myprocess = Process(session)
->>>>>>> 61b26ef8764592295ec5353dc508667413b13b01
     run(session, default_database_directory) #Run the application
     #print(session.query(Setting).filter(Setting.key == 'output_location').one().value)
