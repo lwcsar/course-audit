@@ -62,10 +62,12 @@ def arguments():
     parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
     parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
-    parser.add_argument('--input', help='Import CSV file to application. Follow with file path',nargs='?', const='Default', type=str)
+    parser.add_argument('--input', help='Import CSV file to application. Follow with file path', nargs='?', const='Default', type=str)
     parser.add_argument('--outputdir', help='Directory to output PDF files', type=str)
     parser.add_argument('--dbdir', help='Directory to store the database file', type=str)
-    parser.add_argument('--grade', help='The grade to process or all', type=str)
+    parser.add_argument('--all', help='Process all students', action='store_true')
+    parser.add_argument('--grade', help='Process a grade', type=int)
+    parser.add_argument('--student', help='Process a student', nargs=2, type=str)
 
     args = parser.parse_args()
     return args
@@ -81,11 +83,16 @@ def run(session, default_database_directory):
         None.
     """
     if args.version:
+<<<<<<< HEAD
         #from lib.database_schema import Base, Setting
         #ver = session.query(Setting).all() #.filter(Setting.key == 'version').one()
         #print("Version: "+ver.value)
         # TODO: Fix Version from settings
         print(myInput.get_version())
+=======
+        from lib.database_schema import Base, Setting
+        print(datainput.get_version())
+>>>>>>> 61b26ef8764592295ec5353dc508667413b13b01
         exit()
 
     if args.debug:
@@ -110,6 +117,22 @@ def run(session, default_database_directory):
                 )
     if args.outputdir:
         pass # TODO: Set output Directory
+    if args.all:
+        all_credits = myprocess.process_all(session)
+        pos = 0
+        for credits in all_credits:
+            print(all_credits[pos][0])
+            pos += 1
+    if args.grade:
+        grade_credits = myprocess.process_grade(session, args.grade)
+        pos = 0
+        for credits in grade_credits:
+            print(all_credits[pos][0])
+            pos += 1
+    if args.student:
+        credits = myprocess.process_student(session, args.student[0], args.student[1])
+        print(credits)
+
 
 
 #----#
@@ -117,8 +140,16 @@ def run(session, default_database_directory):
 #----#
 if __name__ == '__main__':
     args = arguments() #Find Arguments
+<<<<<<< HEAD
     Database = Database(default_database_directory)
     session = Database.session()
     myInput = Input(session)
     myProcess = Process(session)
+=======
+    db = Database(default_database_directory)
+    session = db.session()
+    myinput = Input(session)
+    myprocess = Process(session)
+>>>>>>> 61b26ef8764592295ec5353dc508667413b13b01
     run(session, default_database_directory) #Run the application
+    #print(session.query(Setting).filter(Setting.key == 'output_location').one().value)
