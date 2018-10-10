@@ -5,6 +5,7 @@ import logging
 from lib.input import Input
 from lib.process import Process
 from lib.database import Database
+from lib.output import OutputPDF
 from logging.config import fileConfig
 
 '''
@@ -111,10 +112,14 @@ def run(session, default_database_directory):
         pass # TODO: Set output Directory
     if args.all:
         all_credits = myprocess.process_all(session)
+        from lib.database_schema import Base, Student
+        students = session.query(Student)
+        myoutput = OutputPDF()
+        pos = 0
         for credits in all_credits:
-            print(credits)
             missing_credits = myprocess.missing_credits(session, credits)
-            print(missing_credits)
+            myoutput.addStudent(students[pos].first_name, students[pos].last_name, credits, missing_credits)
+        myoutput.savePDF()
     if args.grade:
         grade_credits = myprocess.process_grade(session, args.grade)
         for credits in grade_credits:
