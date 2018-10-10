@@ -40,7 +40,7 @@ class Database():
             Setting(key='minimum_dept_practical_arts', value=1),
             Setting(key='minimum_dept_technology', value=0.5),
             Setting(key='minimum_dept_other', value=0),
-            Setting(key='output_location', value=os.environ["HOMEPATH"]+'\desktop'),
+            Setting(key='output_location', value=os.environ["HOMEPATH"]+'\desktop/'),
         ]
         self.s.bulk_save_objects(settings)
         self.s.commit()

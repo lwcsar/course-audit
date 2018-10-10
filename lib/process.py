@@ -54,6 +54,7 @@ class Process():
     def process_all(self, session):
         from lib.database_schema import Base, Student
         students = session.query(Student)
+        students = students.order_by(Student.last_name)
         student_courses = []
         for student in students:
             credits = self.find_credits(student.courses)

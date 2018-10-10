@@ -100,7 +100,7 @@ def run(session, default_database_directory):
     if args.init:
         import lib.database_schema as dbschema
         dbschema.run(default_database_directory)
-        Database.create_default_settings()
+        db.create_default_settings()
     if args.input:
         if args.input == 'Default':
             myinput.csv_file(default_csv_file)
@@ -109,16 +109,23 @@ def run(session, default_database_directory):
                 os.path.join(os.path.dirname(os.path.abspath(__file__)), str(args.input))
                 )
     if args.outputdir:
-        pass # TODO: Set output Directory
+        from lib.database_schema import Base, Setting
+        Output = session.query(Setting).filter(Setting.id == 21).first()
+        Output.value = args.outputdir
+        session.commit()
+        pass
     if args.all:
+        from lib.database_schema import Base, Setting
         all_credits = myprocess.process_all(session)
         from lib.database_schema import Base, Student
         students = session.query(Student)
-        myoutput = OutputPDF()
+        students = students.order_by(Student.last_name)
+        myoutput = OutputPDF(session.query(Setting).filter(Setting.id == 21).first().value + "\StudentReport")
         pos = 0
         for credits in all_credits:
             missing_credits = myprocess.missing_credits(session, credits)
             myoutput.addStudent(students[pos].first_name, students[pos].last_name, credits, missing_credits)
+            pos += 1
         myoutput.savePDF()
     if args.grade:
         grade_credits = myprocess.process_grade(session, args.grade)
@@ -129,6 +136,7 @@ def run(session, default_database_directory):
     if args.student:
         credits = myprocess.process_student(session, args.student[0], args.student[1])
         missing_credits = myprocess.missing_credits(session, credits)
+        myoutput.addStudent(args.student[0], args.student[1], credits, missing_credits)
         print(credits)
         print(missing_credits)
 
