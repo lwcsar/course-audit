@@ -61,48 +61,58 @@ class Process():
         return student_courses
 
     def find_credits(self, courses):
-        """Credits = [total_credits, core_total, elective_total, bible, mathematics, language_arts,
+        """Credits = [core_total, elective_total, total_credits bible, mathematics, language_arts,
         social_studies, science, foreign_language, physical_education, oral_communications,
         fine_arts, practical_arts, technology, other]"""
         Credits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         for course in courses:
             credit = course.course_credit
             dept = course.course_department
-            Credits[0] += credit
+            Credits[2] += credit
             if dept == "Bible":
                 Credits[3] += credit
-                Credits[1] += credit
+                Credits[0] += credit
             if dept == "Mathematics":
                 Credits[4] += credit
-                Credits[1] += credit
+                Credits[0] += credit
             if dept == "Language Arts":
                 Credits[5] += credit
-                Credits[1] += credit
+                Credits[0] += credit
             if dept == "Social Studies":
                 Credits[6] += credit
-                Credits[1] += credit
+                Credits[0] += credit
             if dept == "Science":
                 Credits[7] += credit
-                Credits[1] += credit
+                Credits[0] += credit
             if dept == "Foriegn Language":
                 Credits[8] += credit
-                Credits[2] += credit
+                Credits[1] += credit
             if dept == "Physical Education":
                 Credits[9] += credit
-                Credits[2] += credit
+                Credits[1] += credit
             if dept == "Oral Communications":
                 Credits[10] += credit
-                Credits[2] += credit
+                Credits[1] += credit
             if dept == "Fine Arts":
                 Credits[11] += credit
-                Credits[2] += credit
+                Credits[1] += credit
             if dept == "Practical Arts":
                 Credits[12] += credit
-                Credits[2] += credit
+                Credits[1] += credit
             if dept == "Technology":
                 Credits[13] += credit
-                Credits[2] += credit
+                Credits[1] += credit
             if dept == "Other":
                 Credits[14] += credit
-                Credits[2] += credit
+                Credits[1] += credit
         return Credits
+    
+        def missing_credits(session, Credits):
+            missing = []
+            settings = session.query(Setting)
+            for credit in Credits:
+                compare_credits = session.query(Setting).filter(Setting.id == credit + 6).value - Credits[credit]
+                if compare_credits > 0:
+                    compare_credits = 0
+                missing.append(compare_credits)
+            return missing
