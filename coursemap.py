@@ -111,19 +111,21 @@ def run(session, default_database_directory):
         pass # TODO: Set output Directory
     if args.all:
         all_credits = myprocess.process_all(session)
-        pos = 0
         for credits in all_credits:
-            print(all_credits[pos][0])
-            pos += 1
+            print(credits)
+            missing_credits = myprocess.missing_credits(credits)
+            print(missing_credits)
     if args.grade:
         grade_credits = myprocess.process_grade(session, args.grade)
-        pos = 0
         for credits in grade_credits:
-            print(all_credits[pos][0])
-            pos += 1
+            print(credits)
+            missing_credits = myprocess.missing_credits(credits)
+            print(missing_credits)
     if args.student:
         credits = myprocess.process_student(session, args.student[0], args.student[1])
+        missing_credits = myprocess.missing_credits(credits)
         print(credits)
+        print(missing_credits)
 
 
 
@@ -137,4 +139,3 @@ if __name__ == '__main__':
     myinput = Input(session)
     myprocess = Process(session)
     run(session, default_database_directory) #Run the application
-    #print(session.query(Setting).filter(Setting.key == 'output_location').one().value)
