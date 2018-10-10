@@ -113,17 +113,17 @@ def run(session, default_database_directory):
         all_credits = myprocess.process_all(session)
         for credits in all_credits:
             print(credits)
-            missing_credits = myprocess.missing_credits(credits)
+            missing_credits = myprocess.missing_credits(session, credits)
             print(missing_credits)
     if args.grade:
         grade_credits = myprocess.process_grade(session, args.grade)
         for credits in grade_credits:
             print(credits)
-            missing_credits = myprocess.missing_credits(credits)
+            missing_credits = myprocess.missing_credits(session, credits)
             print(missing_credits)
     if args.student:
         credits = myprocess.process_student(session, args.student[0], args.student[1])
-        missing_credits = myprocess.missing_credits(credits)
+        missing_credits = myprocess.missing_credits(session, credits)
         print(credits)
         print(missing_credits)
 

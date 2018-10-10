@@ -72,47 +72,53 @@ class Process():
             if dept == "Bible":
                 Credits[3] += credit
                 Credits[0] += credit
-            if dept == "Mathematics":
+            elif dept == "Mathematics":
                 Credits[4] += credit
                 Credits[0] += credit
-            if dept == "Language Arts":
+            elif dept == "Language Arts" or dept == "English":
                 Credits[5] += credit
                 Credits[0] += credit
-            if dept == "Social Studies":
+            elif dept == "Social Studies":
                 Credits[6] += credit
                 Credits[0] += credit
-            if dept == "Science":
+            elif dept == "Science":
                 Credits[7] += credit
                 Credits[0] += credit
-            if dept == "Foriegn Language":
+            elif dept == "Foreign Language":
                 Credits[8] += credit
                 Credits[1] += credit
-            if dept == "Physical Education":
+            elif dept == "Physical Education":
                 Credits[9] += credit
                 Credits[1] += credit
-            if dept == "Oral Communications":
+            elif dept == "Oral Communications":
                 Credits[10] += credit
                 Credits[1] += credit
-            if dept == "Fine Arts":
+            elif dept == "Fine Arts":
                 Credits[11] += credit
                 Credits[1] += credit
-            if dept == "Practical Arts":
+            elif dept == "Practical Arts":
                 Credits[12] += credit
                 Credits[1] += credit
-            if dept == "Technology":
+            elif dept == "Technology":
                 Credits[13] += credit
                 Credits[1] += credit
-            if dept == "Other":
+            elif dept == "Other":
                 Credits[14] += credit
                 Credits[1] += credit
+            else:
+                logging.error(course.course_name + " has no department")
+
         return Credits
-    
-        def missing_credits(session, Credits):
-            missing = []
-            settings = session.query(Setting)
-            for credit in Credits:
-                compare_credits = session.query(Setting).filter(Setting.id == credit + 6).value - Credits[credit]
-                if compare_credits > 0:
-                    compare_credits = 0
-                missing.append(compare_credits)
-            return missing
+
+    def missing_credits(self, session, Credits):
+        from lib.database_schema import Base, Setting
+        missing = []
+        settings = session.query(Setting)
+        pos = 0
+        for credit in Credits:
+            compare_credits = credit - float((session.query(Setting).filter(Setting.id == pos + 6).first()).value)
+            pos += 1
+            if compare_credits > 0:
+                compare_credits = 0
+            missing.append(compare_credits)
+        return missing
