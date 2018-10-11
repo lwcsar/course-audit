@@ -65,61 +65,36 @@ class Process():
         """Credits = [core_total, elective_total, total_credits bible, mathematics, language_arts,
         social_studies, science, foreign_language, physical_education, oral_communications,
         fine_arts, practical_arts, technology, other]"""
-        Credits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        Credits = {"total_credits":0, "core_total":0, "elective_total":0, "Bible":0, "Mathematics":0, "English":0,
+                   "Social Studies":0, "Science":0, "Foreign Language":0, "Physical Education":0, "Oral Communications":0,
+                   "Fine Arts":0, "Practical Arts":0, "Technology": 0, "Other":0}
         for course in courses:
             credit = course.course_credit
-            dept = course.course_department
-            Credits[2] += credit
-            if dept == "Bible":
-                Credits[3] += credit
-                Credits[0] += credit
-            elif dept == "Mathematics":
-                Credits[4] += credit
-                Credits[0] += credit
-            elif dept == "Language Arts" or dept == "English":
-                Credits[5] += credit
-                Credits[0] += credit
-            elif dept == "Social Studies":
-                Credits[6] += credit
-                Credits[0] += credit
-            elif dept == "Science":
-                Credits[7] += credit
-                Credits[0] += credit
-            elif dept == "Foreign Language":
-                Credits[8] += credit
-                Credits[1] += credit
-            elif dept == "Physical Education":
-                Credits[9] += credit
-                Credits[1] += credit
-            elif dept == "Oral Communications":
-                Credits[10] += credit
-                Credits[1] += credit
-            elif dept == "Fine Arts":
-                Credits[11] += credit
-                Credits[1] += credit
-            elif dept == "Practical Arts":
-                Credits[12] += credit
-                Credits[1] += credit
-            elif dept == "Technology":
-                Credits[13] += credit
-                Credits[1] += credit
-            elif dept == "Other":
-                Credits[14] += credit
-                Credits[1] += credit
+            Credits["total_credits"] += credit
+            if course.course_department == "":
+                Credits["Other"] += credit
+                logging.info(course.course_department + " is missing a department. Added to Other")
             else:
-                logging.error(course.course_name + " has no department")
+                Credits[course.course_department] += credit
+        for dept in Credits:
+            if dept == "total_credits" or dept == "core_total" or dept == "elective_total":
+                continue
+
+            if dept == "Bible" or dept == "Mathematics" or dept == "English" or dept == "Social Studies" or dept == "Science": # and the rest
+                Credits["core_total"] += Credits[dept]
+            else:
+                Credits["elective_total"] += Credits[dept]
 
         return Credits
 
     def missing_credits(self, session, Credits):
         from lib.database_schema import Base, Setting
-        missing = []
+        missing = {"total_credits":0, "core_total":0, "elective_total":0, "Bible":0, "Mathematics":0, "English":0,
+                   "Social Studies":0, "Science":0, "Foreign Language":0, "Physical Education":0, "Oral Communications":0,
+                   "Fine Arts":0, "Practical Arts":0, "Technology": 0, "Other":0}
         settings = session.query(Setting)
         pos = 0
         for credit in Credits:
-            compare_credits = credit - float((session.query(Setting).filter(Setting.id == pos + 6).first()).value)
+            missing[credit] = Credits[credit] - float((session.query(Setting).filter(Setting.id == pos + 6).first()).value)
             pos += 1
-            if compare_credits > 0:
-                compare_credits = 0
-            missing.append(compare_credits)
         return missing

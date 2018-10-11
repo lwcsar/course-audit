@@ -129,10 +129,11 @@ def run(session, default_database_directory):
         myoutput.savePDF()
     if args.grade:
         grade_credits = myprocess.process_grade(session, args.grade)
+        pos = 0
         for credits in grade_credits:
-            print(credits)
             missing_credits = myprocess.missing_credits(session, credits)
-            print(missing_credits)
+            myoutput.addStudent(students[pos].first_name, students[pos].last_name, credits, missing_credits)
+            pos += 1
     if args.student:
         credits = myprocess.process_student(session, args.student[0], args.student[1])
         missing_credits = myprocess.missing_credits(session, credits)

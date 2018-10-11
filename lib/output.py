@@ -26,48 +26,15 @@ class OutputPDF:
         self.c.drawString(self.HEADER_INDENT,self.cursor,"Student Reports:")
         self.move_line()
 
-    def addStudent(self, first_name, last_name, credits, missing):
+    def addStudent(self, first_name, last_name, Credits, missing):
         self.c.drawString(self.STUDENT_INDENT, self.cursor, last_name + ", " + first_name + ":")
         self.move_line()
         pos = 0
-        for credit in credits:
-            if pos == 0:
-                dept = "Total Core"
-            elif pos == 1:
-                dept = "Total Elective"
-            elif pos == 2:
-                dept = "Total"
-            elif pos == 3:
-                dept = "Bible"
-            elif pos == 4:
-                dept = "Mathematics"
-            elif pos == 5:
-                dept = "English"
-            elif pos == 6:
-                dept = "Social Studies"
-            elif pos == 7:
-                dept = "Science"
-            elif pos == 8:
-                dept = "Foreign Language"
-            elif pos == 9:
-                dept = "Physical Education"
-            elif pos == 10:
-                dept = "Communications"
-            elif pos == 11:
-                dept = "Fine Arts"
-            elif pos == 12:
-                dept = "Practical Arts"
-            elif pos == 13:
-                dept = "Technology"
-            elif pos == 14:
-                dept = "Other"
-            else:
-                dept = "ERROR: Missing Department"
-            self.c.drawString(self.CREDIT_INDENT, self.cursor, dept + ": " + str(credit))
+        for credit in Credits:
+            self.c.drawString(self.CREDIT_INDENT, self.cursor, credit + ": " + str(Credits[credit]))
             self.move_line()
-            self.c.drawString(self.MISSING_INDENT, self.cursor, "Missing " + str(abs(missing[pos])) + " credits")
+            self.c.drawString(self.MISSING_INDENT, self.cursor, "Missing " + str(abs(missing[credit])) + " credits")
             self.move_line()
-            pos += 1
 
     def move_line(self):
         self.cursor -= self.LINE_OFFSET
