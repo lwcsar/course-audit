@@ -62,54 +62,27 @@ class Process():
         return student_courses
 
     def find_credits(self, courses):
-        """Credits = [core_total, elective_total, total_credits bible, mathematics, language_arts,
-        social_studies, science, foreign_language, physical_education, oral_communications,
-        fine_arts, practical_arts, technology, other]"""
-        Credits = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        from lib.database_schema import Base, Course
+        MasterList = {} # Use braces to initialize it, not square brackets
+        courseee = Course.course_department
+        for courseName in courseee: # TODO: this line is giving me trouble
+            MasterList[courseName] = 0
         for course in courses:
             credit = course.course_credit
-            dept = course.course_department
-            Credits[2] += credit
-            if dept == "Bible":
-                Credits[3] += credit
-                Credits[0] += credit
-            elif dept == "Mathematics":
-                Credits[4] += credit
-                Credits[0] += credit
-            elif dept == "Language Arts" or dept == "English":
-                Credits[5] += credit
-                Credits[0] += credit
-            elif dept == "Social Studies":
-                Credits[6] += credit
-                Credits[0] += credit
-            elif dept == "Science":
-                Credits[7] += credit
-                Credits[0] += credit
-            elif dept == "Foreign Language":
-                Credits[8] += credit
-                Credits[1] += credit
-            elif dept == "Physical Education":
-                Credits[9] += credit
-                Credits[1] += credit
-            elif dept == "Oral Communications":
-                Credits[10] += credit
-                Credits[1] += credit
-            elif dept == "Fine Arts":
-                Credits[11] += credit
-                Credits[1] += credit
-            elif dept == "Practical Arts":
-                Credits[12] += credit
-                Credits[1] += credit
-            elif dept == "Technology":
-                Credits[13] += credit
-                Credits[1] += credit
-            elif dept == "Other":
-                Credits[14] += credit
-                Credits[1] += credit
-            else:
-                logging.error(course.course_name + " has no department")
+            MasterList["total_credits"] += credit #These lines threw errors without the above for loop
+            MasterList[course.course_department] += credit
 
-        return Credits
+        for dept in MasterList:
+            if dept == "total_credits" or dept == "core_total" or dept == "elective_total":
+                continue
+
+            if dept == "Bible" or dept == "Mathematics" or dept == "Language Arts" or dept == "Social Studies" or dept == "Science":
+                MasterList["core_total"] += MasterList[dept]
+            else:
+                MasterList["elective_total"] += MasterList[dept]
+
+        logging.debug('Core total: '+MasterList['core_total'])
+        return MasterList
 
     def missing_credits(self, session, Credits):
         from lib.database_schema import Base, Setting
