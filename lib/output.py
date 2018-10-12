@@ -1,5 +1,11 @@
+import kivy
+import os
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.lang import Builder
 
 '''
 OUTPUT
@@ -44,3 +50,17 @@ class OutputPDF:
 
     def savePDF(self):
         self.c.save()
+
+#Screen Classes
+class HomeScreen(Screen):
+    pass
+class InputScreen(Screen):
+    pass
+class ScreenManagement(ScreenManager):
+    pass
+
+presentation = Builder.load_file(os.path.join(os.path.dirname(os.path.realpath(__file__)), "main.kv"))
+
+class OutputUI(App):
+    def build(self):
+        return presentation

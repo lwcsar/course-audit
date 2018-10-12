@@ -37,6 +37,7 @@ https://docs.python.org/3/library/argparse.html
 
 Application arguments shall include the following:
 -h, --help          to show a brief help message
+-u, --userInterface run the user interface
 -v, --version       display version information and exit.
 -d, --debug         print out debugging information
 --init              Initialize our SQLite database
@@ -61,6 +62,7 @@ def arguments():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('-v','--version', help='Print out the current version and exit.', action='store_true')
+    parser.add_argument('-u','--userInterface', help='Run the user interface', action='store_true')
     parser.add_argument('-d','--debug', help='Print out debugging information.', action='store_true')
     parser.add_argument('--init', help='Initialize our SQLite database.', action='store_true')
     parser.add_argument('--input', help='Import CSV file to application. Follow with file path', nargs='?', const='Default', type=str)
@@ -70,7 +72,7 @@ def arguments():
     parser.add_argument('--grade', help='Process a grade', type=int)
     parser.add_argument('--student', help='Process a student', nargs=2, type=str)
 
-    args = parser.parse_args()
+    args = parser.parse_args(sys.argv[2:])
     return args
 
 
@@ -87,7 +89,10 @@ def run(session, default_database_directory):
         from lib.database_schema import Base, Setting
         print(myinput.get_version())
         exit()
-
+    if args.userInterface:
+        from lib.output import OutputUI
+        OutputUI().run()
+        exit()
     if args.debug:
         #Set up logger
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
