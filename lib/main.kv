@@ -55,10 +55,17 @@ ScreenManagement:
             background_color: 0, 0, 0, .5
         Button:
             text: "Settings"
-            size_hint: 0.4, 0.1
-            pos_hint: {'center_x':.5, 'center_y':.1}
+            size_hint: 0.2, 0.1
+            pos_hint: {'center_x':.4, 'center_y':.1}
             font_size: 50
             on_release: root.manager.current = "Settings"
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Quit"
+            size_hint: 0.2, 0.1
+            pos_hint: {'center_x':.6, 'center_y':.1}
+            font_size: 50
+            on_release: exit()
             background_color: 0, 0, 0, .5
 
 <InputScreen>:

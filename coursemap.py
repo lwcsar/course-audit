@@ -91,6 +91,8 @@ def run(session, default_database_directory):
         exit()
     if args.userInterface:
         from lib.output import OutputUI
+        from kivy.core.window import Window
+        Window.fullscreen = 'auto'
         OutputUI().run()
         exit()
     if args.debug:
