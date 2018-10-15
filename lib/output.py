@@ -15,6 +15,8 @@ The program output will initially be in 2 forms.
     2) PDF saved to disk
 
 '''
+background_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Background.png")
+default_csv = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
 
 class OutputPDF:
     def __init__(self, output):
@@ -55,6 +57,14 @@ class OutputPDF:
 class HomeScreen(Screen):
     pass
 class InputScreen(Screen):
+    pass
+class StudentScreen(Screen):
+    pass
+class GradeScreen(Screen):
+    pass
+class AllScreen(Screen):
+    pass
+class SettingScreen(Screen):
     pass
 class ScreenManagement(ScreenManager):
     pass

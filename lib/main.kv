@@ -1,21 +1,280 @@
 #: import FadeTransition kivy.uix.screenmanager
+#: import Output lib.output
+#: import CM coursemap
 ScreenManagement:
     transition: FadeTransition.FadeTransition()
     HomeScreen:
     InputScreen:
+    StudentScreen:
+    GradeScreen:
+    AllScreen:
+    SettingScreen:
 
 <HomeScreen>:
-    name: 'main'
+    name: 'Home'
 
-    Button:
-        on_release: app.root.current = 'other'
-        text: 'Another Screen'
-        font_size: 50
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: Output.background_path
+
+    FloatLayout:
+        Label:
+            text: "Course Map"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.7}
+            font_size: 70
+        Button:
+            text: "Input"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_size: 50
+            on_release: root.manager.current = "Input"
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Student"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.4}
+            font_size: 50
+            on_release: root.manager.current = "Student"
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Grade"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.3}
+            font_size: 50
+            on_release: root.manager.current = "Grade"
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "All"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.2}
+            font_size: 50
+            on_release: root.manager.current = "All"
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Settings"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            font_size: 50
+            on_release: root.manager.current = "Settings"
+            background_color: 0, 0, 0, .5
 
 <InputScreen>:
-    name: 'other'
+    name: 'Input'
 
-    Button:
-        on_release: app.root.current = 'main'
-        text: 'back to the home screen'
-        font_size: 50
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: Output.background_path
+    FloatLayout:
+        Label:
+            text: "Input"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            font_size: 70
+        Label:
+            text: "Import Student Info from CSV File"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            font_size: 50
+        Label:
+            text: "File Name:"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.6}
+            font_size: 50
+        TextInput:
+            id: file_name
+            text: 'CourseMap.csv'
+            size_hint: 0.8, 0.075
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_size: 30
+        Label:
+            text: 'File Location:'
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.4}
+            font_size: 50
+        TextInput:
+            id: file_location
+            text: Output.default_csv
+            size_hint: 0.8, 0.075
+            pos_hint: {'center_x':.5, 'center_y':.3}
+            font_size: 30
+        Button:
+            text: 'Import CSV'
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.2}
+            font_size: 50
+            on_release: CM.input(file_location.text, file_name.text)
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Back"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            font_size: 50
+            on_release: root.manager.current = "Home"
+            background_color: 0, 0, 0, .5
+
+<StudentScreen>:
+    name: 'Student'
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: Output.background_path
+    FloatLayout:
+        Label:
+            text: "Student"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            font_size: 70
+        Label:
+            text: "Process a single student"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            font_size: 50
+        Label:
+            text: "First Name:"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.6}
+            font_size: 50
+        TextInput:
+            id: first_name
+            text: 'ex: John'
+            size_hint: 0.8, 0.075
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_size: 30
+        Label:
+            text: 'Last Name:'
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.4}
+            font_size: 50
+        TextInput:
+            id: last_name
+            text: 'ex: Doe'
+            size_hint: 0.8, 0.075
+            pos_hint: {'center_x':.5, 'center_y':.3}
+            font_size: 30
+        Button:
+            text: 'Process Student'
+            size_hint: 0.5, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.2}
+            font_size: 50
+            on_release: CM.student(first_name.text, last_name.text)
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Back"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            font_size: 50
+            on_release: root.manager.current = "Home"
+            background_color: 0, 0, 0, .5
+
+<GradeScreen>:
+    name: 'Grade'
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: Output.background_path
+    FloatLayout:
+        Label:
+            text: "Grade"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            font_size: 70
+        Label:
+            text: "Process a Specific Grade"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            font_size: 50
+        Label:
+            text: 'Grade:'
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.5}
+            font_size: 50
+        TextInput:
+            id: grade
+            text: 'ex: 1'
+            size_hint: 0.8, 0.075
+            pos_hint: {'center_x':.5, 'center_y':.4}
+            font_size: 30
+        Button:
+            text: 'Process Grade'
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.2}
+            font_size: 50
+            on_release: CM.grade(grade.text)
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Back"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            font_size: 50
+            on_release: root.manager.current = "Home"
+            background_color: 0, 0, 0, .5
+
+<AllScreen>:
+    name: 'All'
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: Output.background_path
+    FloatLayout:
+        Label:
+            text: "All"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            font_size: 70
+        Label:
+            text: "Process All Students"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            font_size: 50
+        Button:
+            text: 'Process All'
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.4}
+            font_size: 50
+            on_release: CM.all()
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Back"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            font_size: 50
+            on_release: root.manager.current = "Home"
+            background_color: 0, 0, 0, .5
+
+<SettingScreen>:
+    name: 'Settings'
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: Output.background_path
+    FloatLayout:
+        Label:
+            text: "Settings"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.9}
+            font_size: 70
+        Label:
+            text: "Edit Application Settings"
+            size_hint: 0.4, 0.3
+            pos_hint: {'center_x':.5, 'center_y':.8}
+            font_size: 50
+        Button:
+            text: "Back"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            font_size: 50
+            on_release: root.manager.current = "Home"
+            background_color: 0, 0, 0, .5

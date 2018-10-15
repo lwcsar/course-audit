@@ -47,9 +47,9 @@ Application arguments shall include the following:
 '''
 
 #Global Variables
-default_csv_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'CourseMap.csv')
+default_csv = os.path.dirname(os.path.realpath(__file__))
+default_csv_file = os.path.join(default_csv, 'CourseMap.csv')
 default_database_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "doc")
-
 
 def arguments():
     """Returns the arguments run on a command line process.
@@ -103,16 +103,15 @@ def run(session, default_database_directory):
         default_database_directory = args.dbdir
         pass
     if args.init:
-        import lib.database_schema as dbschema
-        dbschema.run(default_database_directory)
-        db.create_default_settings()
+        initialize()
     if args.input:
         if args.input == 'Default':
-            myinput.csv_file(default_csv_file)
+            path = os.path.split(default_csv_file)
         else:
-            myinput.csv_file(
-                os.path.join(os.path.dirname(os.path.abspath(__file__)), str(args.input))
-                )
+            path = os.path.split(args.input)
+        directory = path.head
+        file = path.tail
+        input(directory, file)
     if args.outputdir:
         from lib.database_schema import Base, Setting
         Output = session.query(Setting).filter(Setting.id == 21).first()
@@ -120,33 +119,70 @@ def run(session, default_database_directory):
         session.commit()
         pass
     if args.all:
-        from lib.database_schema import Base, Setting
-        all_credits = myprocess.process_all(session)
-        from lib.database_schema import Base, Student
-        students = session.query(Student)
-        students = students.order_by(Student.last_name)
-        myoutput = OutputPDF(session.query(Setting).filter(Setting.id == 21).first().value + "\StudentReport")
-        pos = 0
-        for credits in all_credits:
-            missing_credits = myprocess.missing_credits(session, credits)
-            myoutput.addStudent(students[pos].first_name, students[pos].last_name, credits, missing_credits)
-            pos += 1
-        myoutput.savePDF()
+        all()
     if args.grade:
-        grade_credits = myprocess.process_grade(session, args.grade)
-        pos = 0
-        for credits in grade_credits:
-            missing_credits = myprocess.missing_credits(session, credits)
-            myoutput.addStudent(students[pos].first_name, students[pos].last_name, credits, missing_credits)
-            pos += 1
+        grade(args.grade)
     if args.student:
-        credits = myprocess.process_student(session, args.student[0], args.student[1])
+        student(args.student[0], args.student[1])
+
+def initialize():
+    db = Database(default_database_directory)
+    session = db.session()
+    import lib.database_schema as dbschema
+    dbschema.run(default_database_directory)
+    db.create_default_settings()
+
+def input(csv_directory, file_name):
+    initialize() #Initialize any time you are inputing information
+    csv_file = os.path.join(csv_directory, file_name)
+    db = Database(default_database_directory)
+    session = db.session()
+    MainInput = Input(session)
+    MainInput.csv_file(csv_file)
+    logging.info(csv_file + ' imported')
+
+def student(first_name, last_name):
+    from lib.database_schema import Base, Setting, Student
+    db = Database(default_database_directory)
+    session = db.session()
+    myprocess = Process(session)
+    myoutput = OutputPDF(session.query(Setting).filter(Setting.id == 21).first().value + "\StudentReport.pdf")
+    credits = myprocess.process_student(session, first_name, last_name)
+    missing_credits = myprocess.missing_credits(session, credits)
+    myoutput.addStudent(first_name, last_name, credits, missing_credits)
+    myoutput.savePDF()
+
+def grade(grade):
+    from lib.database_schema import Base, Setting, Student
+    db = Database(default_database_directory)
+    session = db.session()
+    myprocess = Process(session)
+    myoutput = OutputPDF(session.query(Setting).filter(Setting.id == 21).first().value + "\StudentReport.pdf")
+    grade_credits = myprocess.process_grade(session, grade)
+    students = session.query(Student).filter(Student.grade_level == grade)
+    students = students.order_by(Student.last_name)
+    pos = 0
+    for credits in grade_credits:
         missing_credits = myprocess.missing_credits(session, credits)
-        myoutput.addStudent(args.student[0], args.student[1], credits, missing_credits)
-        print(credits)
-        print(missing_credits)
+        myoutput.addStudent(students[pos].first_name, students[pos].last_name, credits, missing_credits)
+        pos += 1
+    myoutput.savePDF()
 
-
+def all():
+    from lib.database_schema import Base, Setting, Student
+    db = Database(default_database_directory)
+    session = db.session()
+    myprocess = Process(session)
+    all_credits = myprocess.process_all(session)
+    students = session.query(Student)
+    students = students.order_by(Student.last_name)
+    myoutput = OutputPDF(session.query(Setting).filter(Setting.id == 21).first().value + "\StudentReport.pdf")
+    pos = 0
+    for credits in all_credits:
+        missing_credits = myprocess.missing_credits(session, credits)
+        myoutput.addStudent(students[pos].first_name, students[pos].last_name, credits, missing_credits)
+        pos += 1
+    myoutput.savePDF()
 
 #----#
 #Main#
@@ -155,6 +191,5 @@ if __name__ == '__main__':
     args = arguments() #Find Arguments
     db = Database(default_database_directory)
     session = db.session()
-    myinput = Input(session)
     myprocess = Process(session)
     run(session, default_database_directory) #Run the application
