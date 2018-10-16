@@ -6,6 +6,8 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.lang import Builder
+from kivy.uix.scrollview import ScrollView
+from kivy.properties import StringProperty
 
 '''
 OUTPUT
@@ -17,6 +19,7 @@ The program output will initially be in 2 forms.
 '''
 background_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Background.png")
 default_csv = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
+output_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Display.txt")
 
 class OutputPDF:
     def __init__(self, output):
@@ -34,15 +37,24 @@ class OutputPDF:
         self.c.drawString(self.HEADER_INDENT,self.cursor,"Student Reports:")
         self.move_line()
 
+        f = open(output_file, 'w')
+        f.write('Student Reports:' + '\n')
+        f.close()
+
     def addStudent(self, first_name, last_name, Credits, missing):
+        f = open(output_file, 'a')
         self.c.drawString(self.STUDENT_INDENT, self.cursor, last_name + ", " + first_name + ":")
+        f.write('     ' + last_name + ', ' + first_name + ':' + '\n')
         self.move_line()
         pos = 0
         for credit in Credits:
             self.c.drawString(self.CREDIT_INDENT, self.cursor, credit + ": " + str(Credits[credit]))
+            f.write('     ' + '     ' + credit + ': ' + str(Credits[credit]) + '\n')
             self.move_line()
             self.c.drawString(self.MISSING_INDENT, self.cursor, "Missing " + str(abs(missing[credit])) + " credits")
+            f.write('     ' + '     ' + '     ' + 'Missing ' + str(abs(missing[credit])) + ' credits' + '\n')
             self.move_line()
+        f.close()
 
     def move_line(self):
         self.cursor -= self.LINE_OFFSET
@@ -65,6 +77,15 @@ class GradeScreen(Screen):
 class AllScreen(Screen):
     pass
 class SettingScreen(Screen):
+    pass
+class DisplayScreen(Screen):
+    text = StringProperty('')
+
+    def load_display(self, **kwargs):
+        self.text = "Test"
+        with open(output_file, "r") as f:
+            contents = f.read()
+            self.text = contents
     pass
 class ScreenManagement(ScreenManager):
     pass

@@ -50,7 +50,7 @@ Application arguments shall include the following:
 default_csv = os.path.dirname(os.path.realpath(__file__))
 default_csv_file = os.path.join(default_csv, 'CourseMap.csv')
 default_database_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "doc")
-
+HardCodeUI = True
 def arguments():
     """Returns the arguments run on a command line process.
 
@@ -193,5 +193,10 @@ if __name__ == '__main__':
     args = arguments() #Find Arguments
     db = Database(default_database_directory)
     session = db.session()
-    myprocess = Process(session)
+    if(HardCodeUI == True):
+        from lib.output import OutputUI
+        from kivy.core.window import Window
+        Window.fullscreen = 'auto'
+        OutputUI().run()
+        exit()
     run(session, default_database_directory) #Run the application

@@ -63,34 +63,31 @@ class Process():
         return student_courses
 
     def find_credits(self, courses):
-        """Credits = [core_total, elective_total, total_credits bible, mathematics, language_arts,
-        social_studies, science, foreign_language, physical_education, oral_communications,
-        fine_arts, practical_arts, technology, other]"""
-        Credits = {"total_credits":0, "core_total":0, "elective_total":0, "Bible":0, "Mathematics":0, "English":0,
+        Credits = {"Total":0, "Core":0, "Elective":0, "Bible":0, "Mathematics":0, "English":0,
                    "Social Studies":0, "Science":0, "Foreign Language":0, "Physical Education":0, "Oral Communications":0,
                    "Fine Arts":0, "Practical Arts":0, "Technology": 0, "Other":0}
         for course in courses:
             credit = course.course_credit
-            Credits["total_credits"] += credit
+            Credits["Total"] += credit
             if course.course_department == "":
                 Credits["Other"] += credit
                 logging.info(course.course_department + " is missing a department. Added to Other")
             else:
                 Credits[course.course_department] += credit
         for dept in Credits:
-            if dept == "total_credits" or dept == "core_total" or dept == "elective_total":
+            if dept == "Total" or dept == "Core" or dept == "Elective":
                 continue
 
             if dept == "Bible" or dept == "Mathematics" or dept == "English" or dept == "Social Studies" or dept == "Science": # and the rest
-                Credits["core_total"] += Credits[dept]
+                Credits["Core"] += Credits[dept]
             else:
-                Credits["elective_total"] += Credits[dept]
+                Credits["Elective"] += Credits[dept]
 
         return Credits
 
     def missing_credits(self, session, Credits):
         from lib.database_schema import Base, Setting
-        missing = {"total_credits":0, "core_total":0, "elective_total":0, "Bible":0, "Mathematics":0, "English":0,
+        missing = {"Total":0, "Core":0, "Elective":0, "Bible":0, "Mathematics":0, "English":0,
                    "Social Studies":0, "Science":0, "Foreign Language":0, "Physical Education":0, "Oral Communications":0,
                    "Fine Arts":0, "Practical Arts":0, "Technology": 0, "Other":0}
         settings = session.query(Setting)

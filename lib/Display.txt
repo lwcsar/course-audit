@@ -1,0 +1,94 @@
+Student Reports:
+     Crutchfield,  Eli:
+          Total: 15.5
+               Missing 7.0 credits
+          Core: 10.0
+               Missing 3.5 credits
+          Elective: 5.5
+               Missing 23.5 credits
+          Bible: 2.0
+               Missing 2.0 credits
+          Mathematics: 2.0
+               Missing 2.0 credits
+          English: 2.0
+               Missing 2.0 credits
+          Social Studies: 2.0
+               Missing 2.0 credits
+          Science: 2.0
+               Missing 1.0 credits
+          Foreign Language: 1.0
+               Missing 1.0 credits
+          Physical Education: 1.5
+               Missing 0.5 credits
+          Oral Communications: 0.5
+               Missing 0.0 credits
+          Fine Arts: 1.5
+               Missing 1.0 credits
+          Practical Arts: 0.5
+               Missing 0.5 credits
+          Technology: 0.5
+               Missing 0.0 credits
+          Other: 0
+               Missing 0.0 credits
+     Green,  Maxwell:
+          Total: 24.5
+               Missing 2.0 credits
+          Core: 15.0
+               Missing 8.5 credits
+          Elective: 9.5
+               Missing 19.5 credits
+          Bible: 3.0
+               Missing 1.0 credits
+          Mathematics: 3.0
+               Missing 1.0 credits
+          English: 3.0
+               Missing 1.0 credits
+          Social Studies: 3.0
+               Missing 1.0 credits
+          Science: 3.0
+               Missing 0.0 credits
+          Foreign Language: 2.0
+               Missing 0.0 credits
+          Physical Education: 1.0
+               Missing 0.0 credits
+          Oral Communications: 0.5
+               Missing 0.0 credits
+          Fine Arts: 0.5
+               Missing 0.0 credits
+          Practical Arts: 1.0
+               Missing 0.0 credits
+          Technology: 4.0
+               Missing 3.5 credits
+          Other: 0.5
+               Missing 0.5 credits
+     Shoe,  Ethan:
+          Total: 24.0
+               Missing 1.5 credits
+          Core: 15.0
+               Missing 8.5 credits
+          Elective: 9.0
+               Missing 20.0 credits
+          Bible: 3.0
+               Missing 1.0 credits
+          Mathematics: 3.0
+               Missing 1.0 credits
+          English: 3.0
+               Missing 1.0 credits
+          Social Studies: 3.0
+               Missing 1.0 credits
+          Science: 3.0
+               Missing 0.0 credits
+          Foreign Language: 2.0
+               Missing 0.0 credits
+          Physical Education: 1.0
+               Missing 0.0 credits
+          Oral Communications: 0.5
+               Missing 0.0 credits
+          Fine Arts: 0.5
+               Missing 0.0 credits
+          Practical Arts: 0.5
+               Missing 0.5 credits
+          Technology: 3.5
+               Missing 3.0 credits
+          Other: 1.0
+               Missing 1.0 credits

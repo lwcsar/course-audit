@@ -1,4 +1,4 @@
 kivy
 sqlalchemy
 reportlab
-pdf2image
+PyPDF2

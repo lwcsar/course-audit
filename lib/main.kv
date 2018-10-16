@@ -9,6 +9,7 @@ ScreenManagement:
     GradeScreen:
     AllScreen:
     SettingScreen:
+    DisplayScreen
 
 <HomeScreen>:
     name: 'Home'
@@ -171,6 +172,7 @@ ScreenManagement:
             pos_hint: {'center_x':.5, 'center_y':.2}
             font_size: 50
             on_release: CM.student(first_name.text, last_name.text)
+            on_release: root.manager.current = "Display"
             background_color: 0, 0, 0, .5
         Button:
             text: "Back"
@@ -216,6 +218,7 @@ ScreenManagement:
             pos_hint: {'center_x':.5, 'center_y':.2}
             font_size: 50
             on_release: CM.grade(grade.text)
+            on_release: root.manager.current = "Display"
             background_color: 0, 0, 0, .5
         Button:
             text: "Back"
@@ -250,6 +253,7 @@ ScreenManagement:
             pos_hint: {'center_x':.5, 'center_y':.4}
             font_size: 50
             on_release: CM.all()
+            on_release: root.manager.current = "Display"
             background_color: 0, 0, 0, .5
         Button:
             text: "Back"
@@ -284,4 +288,39 @@ ScreenManagement:
             pos_hint: {'center_x':.5, 'center_y':.1}
             font_size: 50
             on_release: root.manager.current = "Home"
+            background_color: 0, 0, 0, .5
+
+<DisplayScreen>:
+    name: 'Display'
+
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: Output.background_path
+    FloatLayout:
+        ScrollView:
+            pos_hint: {'center_x':.5, 'center_y':.7}
+            size_hint: 0.4, 0.6
+            Label:
+                text_size: self.width, None
+                size_hint_y: None
+                height: self.texture_size[1]
+                pos_hint: {'center_x':.5, 'center_y':.4}
+                text: root.text
+                font_size: 50
+                markup: True
+        Button:
+            text: 'Load PDF'
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.2}
+            font_size: 50
+            on_release: root.load_display()
+            background_color: 0, 0, 0, .5
+        Button:
+            text: "Done"
+            size_hint: 0.4, 0.1
+            pos_hint: {'center_x':.5, 'center_y':.1}
+            font_size: 50
+            on_release: exit()
             background_color: 0, 0, 0, .5
